@@ -10,6 +10,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Sacola from './pages/Sacola'
 import ProductDetail from './pages/ProductDetail'
+import Category from './pages/Category'
 
 // Admin pages
 import Dashboard from './pages/admin/Dashboard'
@@ -31,6 +32,7 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/sacola" element={<Sacola />} />
               <Route path="/produto/:id" element={<ProductDetail />} />
+              <Route path="/categoria/:slug" element={<Category />} />
 
               {/* Admin */}
               <Route path="/admin" element={
