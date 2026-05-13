@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import formatPrice from '../../lib/formatPrice'
 
@@ -13,25 +14,27 @@ const STATUS_LABELS = {
 export default function Orders() {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
+  const [filterStatus, setFilterStatus] = useState('')
+  const [filterDate, setFilterDate] = useState('')
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     loadOrders()
-  }, [])
+  }, [filterStatus, filterDate])
 
   async function loadOrders() {
     setLoading(true)
-    const { data } = await supabase
+    let query = supabase
       .from('orders')
-      .select('*, profiles(full_name, phone), order_items(*, products(name))')
+      .select('*, profiles(full_name, phone)')
       .order('created_at', { ascending: false })
 
+    if (filterStatus) query = query.eq('status', filterStatus)
+    if (filterDate) query = query.gte('created_at', filterDate)
+
+    const { data } = await query
     setOrders(data || [])
     setLoading(false)
-  }
-
-  async function updateStatus(orderId, newStatus) {
-    await supabase.from('orders').update({ status: newStatus }).eq('id', orderId)
-    loadOrders()
   }
 
   function formatDate(dateStr) {
@@ -40,79 +43,97 @@ export default function Orders() {
     })
   }
 
+  const filtered = orders.filter(o => {
+    if (!search) return true
+    const term = search.toLowerCase()
+    const name = (o.profiles?.full_name || '').toLowerCase()
+    const id = o.id.toLowerCase()
+    return name.includes(term) || id.includes(term)
+  })
+
   if (loading) return <div className="max-w-6xl mx-auto px-4 py-8"><p>Carregando pedidos...</p></div>
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Pedidos</h1>
 
-      {orders.length === 0 ? (
-        <p className="text-gray-500">Nenhum pedido ainda.</p>
+      <div className="flex flex-wrap gap-3 mb-6">
+        <input
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Buscar por nome ou ID..."
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+        />
+        <select
+          value={filterStatus}
+          onChange={e => setFilterStatus(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Todos os status</option>
+          {Object.entries(STATUS_LABELS).map(([key, { label }]) => (
+            <option key={key} value={key}>{label}</option>
+          ))}
+        </select>
+        <input
+          type="date"
+          value={filterDate}
+          onChange={e => setFilterDate(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {(filterStatus || filterDate || search) && (
+          <button
+            onClick={() => { setFilterStatus(''); setFilterDate(''); setSearch('') }}
+            className="px-3 py-2 text-sm text-gray-500 hover:text-gray-700"
+          >
+            Limpar filtros
+          </button>
+        )}
+      </div>
+
+      {filtered.length === 0 ? (
+        <p className="text-gray-500">Nenhum pedido encontrado.</p>
       ) : (
-        <div className="space-y-4">
-          {orders.map(order => {
-            const status = STATUS_LABELS[order.status] || { label: order.status, color: 'bg-gray-100 text-gray-700' }
-            const address = order.shipping_address || {}
-            return (
-              <div key={order.id} className="bg-white border border-gray-200 rounded-lg p-5">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <p className="text-sm font-mono text-gray-400">#{order.id.slice(0, 8)}</p>
-                    <p className="text-sm font-medium">{order.profiles?.full_name || 'Cliente'}</p>
-                    <p className="text-xs text-gray-500">{formatDate(order.created_at)}</p>
-                  </div>
-                  <div className="text-right">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${status.color}`}>
-                      {status.label}
-                    </span>
-                    <p className="text-lg font-bold mt-1">{formatPrice(order.total)}</p>
-                  </div>
-                </div>
-
-                {/* Items */}
-                <div className="border-t border-gray-100 pt-3 mb-3">
-                  <p className="text-xs font-medium text-gray-500 mb-1">Itens:</p>
-                  {order.order_items?.map(item => (
-                    <div key={item.id} className="flex justify-between text-sm text-gray-700">
-                      <span>{item.quantity}x {item.product_name}</span>
-                      <span>{formatPrice(item.unit_price * item.quantity)}</span>
-                    </div>
-                  ))}
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>Frete</span>
-                    <span>{order.shipping_cost > 0 ? formatPrice(order.shipping_cost) : 'Grátis'}</span>
-                  </div>
-                </div>
-
-                {/* Address */}
-                <div className="border-t border-gray-100 pt-3 mb-3">
-                  <p className="text-xs font-medium text-gray-500 mb-1">Endereço:</p>
-                  <p className="text-sm text-gray-700">
-                    {address.street}, {address.number} {address.complement ? `- ${address.complement}` : ''}
-                    <br />{address.neighborhood} — {address.city}/{address.state} — CEP: {address.cep}
-                  </p>
-                </div>
-
-                {/* Status update */}
-                <div className="border-t border-gray-100 pt-3 flex items-center gap-3">
-                  <label className="text-xs text-gray-500">Atualizar status:</label>
-                  <select
-                    value={order.status}
-                    onChange={e => updateStatus(order.id, e.target.value)}
-                    className="px-2 py-1 border border-gray-300 rounded text-sm"
-                  >
-                    <option value="awaiting_payment">Aguardando Pagamento</option>
-                    <option value="processing">Processando</option>
-                    <option value="shipped">Enviado</option>
-                    <option value="delivered">Entregue</option>
-                    <option value="cancelled">Cancelado</option>
-                  </select>
-                </div>
-              </div>
-            )
-          })}
+        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="text-left px-4 py-3 font-medium text-gray-600">Pedido</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600">Cliente</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600">Data</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600">Pagamento</th>
+                <th className="text-right px-4 py-3 font-medium text-gray-600">Total</th>
+                <th className="text-right px-4 py-3 font-medium text-gray-600">Acoes</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filtered.map(order => {
+                const s = STATUS_LABELS[order.status] || { label: order.status, color: 'bg-gray-100 text-gray-700' }
+                return (
+                  <tr key={order.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-mono text-xs text-gray-500">#{order.id.slice(0, 8)}</td>
+                    <td className="px-4 py-3 text-gray-700">{order.profiles?.full_name || 'Cliente'}</td>
+                    <td className="px-4 py-3 text-gray-500 text-xs">{formatDate(order.created_at)}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${s.color}`}>{s.label}</span>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{order.mp_status || '—'}</td>
+                    <td className="px-4 py-3 text-right font-medium">{formatPrice(order.total)}</td>
+                    <td className="px-4 py-3 text-right">
+                      <Link to={`/admin/pedidos/${order.id}`} className="text-blue-600 hover:underline text-xs">
+                        Ver detalhes
+                      </Link>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
       )}
+
+      <p className="text-xs text-gray-400 mt-4">{filtered.length} pedido(s)</p>
     </div>
   )
 }
