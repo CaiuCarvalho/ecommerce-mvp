@@ -118,25 +118,21 @@ export default function ProductForm({ productId = null }) {
   }
 
   async function handleDelete() {
-    if (!window.confirm('Tem certeza que deseja excluir este produto?')) return
+    if (!window.confirm('Tem certeza que deseja desativar este produto?')) return
 
     setDeleting(true)
     try {
-      // Delete images from storage
-      for (const image of images) {
-        const urlParts = image.url.split('/product-images/')
-        if (urlParts[1]) {
-          await supabase.storage.from('product-images').remove([urlParts[1]])
-        }
-      }
+      const { error } = await supabase
+        .from('products')
+        .update({ is_active: false })
+        .eq('id', productId)
 
-      const { error } = await supabase.from('products').delete().eq('id', productId)
       if (error) throw error
 
-      toast.success('Produto excluído')
+      toast.success('Produto desativado')
       navigate('/admin/produtos')
     } catch (err) {
-      toast.error(err.message || 'Erro ao excluir')
+      toast.error(err.message || 'Erro ao desativar')
       setDeleting(false)
     }
   }
@@ -166,7 +162,7 @@ export default function ProductForm({ productId = null }) {
               disabled={deleting}
               className="px-4 py-2 text-sm text-red-600 border border-red-300 rounded-md hover:bg-red-50 disabled:opacity-50"
             >
-              {deleting ? 'Excluindo...' : 'Excluir'}
+              {deleting ? 'Desativando...' : 'Desativar'}
             </button>
           )}
           <button
