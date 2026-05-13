@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 // Public pages
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import Sacola from './pages/Sacola'
 import ProductDetail from './pages/ProductDetail'
 import Category from './pages/Category'
@@ -30,6 +31,7 @@ export default function App() {
               {/* Public */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/cadastro" element={<Register />} />
               <Route path="/sacola" element={<Sacola />} />
               <Route path="/produto/:id" element={<ProductDetail />} />
               <Route path="/categoria/:slug" element={<Category />} />
