@@ -26,7 +26,6 @@ export default function Home() {
           .from('products')
           .select('*, product_images(url, position), categories(name)')
           .eq('is_active', true)
-          .eq('stock_status', 'available')
           .order('created_at', { ascending: false })
 
         if (activeCategory) {
@@ -118,12 +117,18 @@ export default function Home() {
                     )}
                     <span className="text-sm font-bold text-gray-900">{formatPrice(product.price)}</span>
                   </div>
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="w-full py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
-                  >
-                    Adicionar à Sacola
-                  </button>
+                  {product.stock_status === 'available' ? (
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="w-full py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      Adicionar a Sacola
+                    </button>
+                  ) : (
+                    <span className="block w-full py-1.5 text-xs text-center text-gray-400 border border-gray-200 rounded">
+                      Esgotado
+                    </span>
+                  )}
                 </div>
               </div>
             )
