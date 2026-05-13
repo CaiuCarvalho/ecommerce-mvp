@@ -19,6 +19,7 @@ import Products from './pages/admin/Products'
 import ProductNew from './pages/admin/ProductNew'
 import ProductEdit from './pages/admin/ProductEdit'
 import Orders from './pages/admin/Orders'
+import OrderDetail from './pages/admin/OrderDetail'
 
 export default function App() {
   return (
@@ -60,6 +61,11 @@ export default function App() {
               <Route path="/admin/pedidos" element={
                 <ProtectedRoute requireAdmin>
                   <Orders />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/pedidos/:id" element={
+                <ProtectedRoute requireAdmin>
+                  <OrderDetail />
                 </ProtectedRoute>
               } />
             </Route>
