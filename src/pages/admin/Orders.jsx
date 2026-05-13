@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import formatPrice from '../../lib/formatPrice'
 
 const STATUS_LABELS = {
   awaiting_payment: { label: 'Aguardando Pagamento', color: 'bg-yellow-100 text-yellow-700' },
@@ -31,10 +32,6 @@ export default function Orders() {
   async function updateStatus(orderId, newStatus) {
     await supabase.from('orders').update({ status: newStatus }).eq('id', orderId)
     loadOrders()
-  }
-
-  function formatPrice(value) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
   }
 
   function formatDate(dateStr) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
+import formatPrice from '../../lib/formatPrice'
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ products: 0, orders: 0, revenue: 0 })
@@ -25,10 +26,6 @@ export default function Dashboard() {
 
     loadStats()
   }, [])
-
-  function formatPrice(value) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">

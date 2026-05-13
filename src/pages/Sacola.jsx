@@ -1,12 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
+import formatPrice from '../lib/formatPrice'
 
 export default function Sacola() {
   const { items, removeItem, updateQuantity, subtotal } = useCart()
-
-  function formatPrice(value) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-  }
 
   if (items.length === 0) {
     return (

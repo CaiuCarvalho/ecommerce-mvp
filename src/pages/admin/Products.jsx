@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
+import formatPrice from '../../lib/formatPrice'
 
 export default function Products() {
   const [products, setProducts] = useState([])
@@ -35,10 +36,6 @@ export default function Products() {
     const { data } = await query
     setProducts(data || [])
     setLoading(false)
-  }
-
-  function formatPrice(value) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
   }
 
   const filtered = products.filter(p =>

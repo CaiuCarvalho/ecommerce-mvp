@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useCart } from '../contexts/CartContext'
 import toast from 'react-hot-toast'
+import formatPrice from '../lib/formatPrice'
 
 export default function Home() {
   const [products, setProducts] = useState([])
@@ -60,10 +61,6 @@ export default function Home() {
       image_url: mainImage?.url || null,
     })
     toast.success('Adicionado à sacola!')
-  }
-
-  function formatPrice(value) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
   }
 
   return (
