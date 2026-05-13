@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Sacola from './pages/Sacola'
+import ProductDetail from './pages/ProductDetail'
 
 // Admin pages
 import Dashboard from './pages/admin/Dashboard'
@@ -29,6 +30,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/sacola" element={<Sacola />} />
+              <Route path="/produto/:id" element={<ProductDetail />} />
 
               {/* Admin */}
               <Route path="/admin" element={
