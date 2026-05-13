@@ -43,9 +43,14 @@ export default function Layout() {
                 Sair
               </button>
             ) : (
-              <Link to="/login" className="text-blue-600 hover:text-blue-800">
-                Entrar
-              </Link>
+              <>
+                <Link to="/login" className="text-blue-600 hover:text-blue-800">
+                  Entrar
+                </Link>
+                <Link to="/cadastro" className="text-gray-600 hover:text-gray-900">
+                  Cadastro
+                </Link>
+              </>
             )}
           </nav>
         </div>
