@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useCart } from '../contexts/CartContext'
 import formatPrice from '../lib/formatPrice'
 
@@ -17,6 +18,9 @@ export default function Sacola() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
+      <Helmet>
+        <title>Sacola | Loja MVP</title>
+      </Helmet>
       <h1 className="text-2xl font-bold mb-6">Sacola</h1>
 
       <div className="space-y-4">

@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Loja MVP</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Agon Imports</h3>
             <p className="text-sm text-gray-500">
               Produtos selecionados com entrega para todo o Brasil.
             </p>
@@ -27,15 +27,21 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Ajuda</h3>
             <ul className="space-y-1 text-sm text-gray-500">
               <li><Link to="/sacola" className="hover:text-gray-700">Minha Sacola</Link></li>
-              <li><Link to="/login" className="hover:text-gray-700">Minha Conta</Link></li>
+              <li><Link to="/minha-conta" className="hover:text-gray-700">Minha Conta</Link></li>
+              <li><Link to="/politica-de-privacidade" className="hover:text-gray-700">Política de Privacidade</Link></li>
+              <li><Link to="/termos-de-uso" className="hover:text-gray-700">Termos de Uso</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-gray-100 mt-8 pt-4 text-center text-xs text-gray-400">
-          Loja MVP {new Date().getFullYear()}. Todos os direitos reservados.
+          Agon Imports {new Date().getFullYear()}. Todos os direitos reservados.{' '}
+          <Link to="/politica-de-privacidade" className="hover:underline">Privacidade</Link>
+          {' · '}
+          <Link to="/termos-de-uso" className="hover:underline">Termos</Link>
         </div>
       </div>
     </footer>
   )
 }
+

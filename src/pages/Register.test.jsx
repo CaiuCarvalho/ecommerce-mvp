@@ -46,7 +46,7 @@ describe('Register page', () => {
 
     await user.click(screen.getByRole('button', { name: /Criar Conta/i }))
 
-    await waitFor(() => expect(signUp).toHaveBeenCalledWith('joao@test.com', 'secret123', 'João Silva'))
+    await waitFor(() => expect(signUp).toHaveBeenCalledWith('joao@test.com', 'secret123', 'João Silva', '11999999999'))
     await waitFor(() => expect(toastSuccess).toHaveBeenCalled())
     await waitFor(() => expect(screen.getByText('Home')).toBeInTheDocument())
   })

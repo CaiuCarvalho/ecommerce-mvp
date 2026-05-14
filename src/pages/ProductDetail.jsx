@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { supabase } from '../lib/supabase'
 import { useCart } from '../contexts/CartContext'
 import formatPrice from '../lib/formatPrice'
@@ -14,6 +15,8 @@ export default function ProductDetail() {
   const { addItem } = useCart()
 
   useEffect(() => {
+    let cancelled = false
+
     async function load() {
       const { data, error } = await supabase
         .from('products')
@@ -21,6 +24,8 @@ export default function ProductDetail() {
         .eq('id', id)
         .eq('is_active', true)
         .single()
+
+      if (cancelled) return
 
       if (error || !data) {
         setProduct(null)
@@ -31,6 +36,16 @@ export default function ProductDetail() {
       setLoading(false)
     }
     load()
+
+    function handlePageShow(e) {
+      if (e.persisted) load()
+    }
+    window.addEventListener('pageshow', handlePageShow)
+
+    return () => {
+      cancelled = true
+      window.removeEventListener('pageshow', handlePageShow)
+    }
   }, [id])
 
   function handleAddToCart() {
@@ -61,6 +76,10 @@ export default function ProductDetail() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <Helmet>
+        <title>{product.name} | Loja MVP</title>
+        <meta name="description" content={product.description ? product.description.slice(0, 160) : `Compre ${product.name} na Loja MVP com frete grátis acima de R$100.`} />
+      </Helmet>
       <nav className="text-sm text-gray-500 mb-6">
         <Link to="/" className="hover:text-gray-700">Inicio</Link>
         {product.categories && (

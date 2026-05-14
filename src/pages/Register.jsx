@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useAuth } from '../contexts/AuthContext'
 import toast from 'react-hot-toast'
 
@@ -9,19 +10,52 @@ export default function Register() {
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [cooldown, setCooldown] = useState(false)
   const { signUp } = useAuth()
   const navigate = useNavigate()
 
   async function handleSubmit(e) {
     e.preventDefault()
+    if (cooldown) return
+
+    // Normalização simples: remove parênteses, espaços e traços do telefone
+    const cleanPhone = phone.replace(/\D/g, '')
+
+    if (cleanPhone.length < 10) {
+      return toast.error('Telefone inválido. Informe o DDD e o número.')
+    }
+
     setSubmitting(true)
 
     try {
-      await signUp(email, password, fullName)
+      // 1. Checagem de segurança: verifica se o telefone já existe
+      const { data: existing } = await supabase
+        .from('profiles')
+        .select('phone')
+        .eq('phone', cleanPhone)
+        .maybeSingle()
+
+      if (existing) {
+        throw new Error('Este telefone já está em uso por outra conta.')
+      }
+
+      await signUp(email, password, fullName, cleanPhone)
       toast.success('Conta criada! Verifique seu email.')
       navigate('/')
     } catch (err) {
-      toast.error(err.message || 'Erro ao criar conta')
+      const msg = err.message || ''
+      
+      // Tratamento amigável para erros de duplicidade
+      if (msg.includes('profiles_phone_unique')) {
+        toast.error('Este telefone já está em uso.')
+      } else if (msg.includes('User already registered')) {
+        toast.error('Este e-mail já está cadastrado.')
+      } else {
+        toast.error(msg || 'Erro ao criar conta')
+      }
+      
+      setCooldown(true)
+      setTimeout(() => setCooldown(false), 3000)
     } finally {
       setSubmitting(false)
     }
@@ -29,6 +63,9 @@ export default function Register() {
 
   return (
     <div className="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg border border-gray-200">
+      <Helmet>
+        <title>Criar Conta | Loja MVP</title>
+      </Helmet>
       <h1 className="text-2xl font-bold mb-6">Criar Conta</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -83,10 +120,10 @@ export default function Register() {
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || cooldown}
           className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
         >
-          {submitting ? 'Criando...' : 'Criar Conta'}
+          {submitting ? 'Criando...' : cooldown ? 'Aguarde...' : 'Criar Conta'}
         </button>
       </form>
 

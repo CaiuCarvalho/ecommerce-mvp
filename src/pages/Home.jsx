@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { supabase } from '../lib/supabase'
 import { useCart } from '../contexts/CartContext'
 import toast from 'react-hot-toast'
@@ -13,12 +14,14 @@ export default function Home() {
   const { addItem } = useCart()
 
   useEffect(() => {
-    supabase.from('categories').select('*').order('id').then(({ data }) => {
+    supabase.from('categories').select('*').eq('is_active', true).order('id').then(({ data }) => {
       setCategories(data || [])
     })
   }, [])
 
   useEffect(() => {
+    let cancelled = false
+
     async function loadProducts() {
       setLoading(true)
       try {
@@ -34,6 +37,8 @@ export default function Home() {
 
         const { data, error } = await query
 
+        if (cancelled) return
+
         if (error) {
           console.error('Erro ao carregar produtos:', error)
           toast.error('Erro ao carregar produtos')
@@ -43,11 +48,22 @@ export default function Home() {
       } catch (err) {
         console.error('Erro inesperado:', err)
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
 
     loadProducts()
+
+    // Reload products when page is restored from bfcache (back from MP redirect)
+    function handlePageShow(e) {
+      if (e.persisted) loadProducts()
+    }
+    window.addEventListener('pageshow', handlePageShow)
+
+    return () => {
+      cancelled = true
+      window.removeEventListener('pageshow', handlePageShow)
+    }
   }, [activeCategory])
 
   function handleAddToCart(product) {
@@ -64,6 +80,10 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Helmet>
+        <title>Loja MVP | Melhores Produtos com Frete Grátis</title>
+        <meta name="description" content="Encontre os melhores produtos em diversas categorias com frete grátis acima de R$100. Utilidades domésticas, ferramentas, beleza, brinquedos e mais." />
+      </Helmet>
       <h1 className="text-2xl font-bold mb-6">Produtos</h1>
 
       {/* Category filter */}

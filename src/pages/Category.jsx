@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { supabase } from '../lib/supabase'
 import { useCart } from '../contexts/CartContext'
 import formatPrice from '../lib/formatPrice'
@@ -13,6 +14,8 @@ export default function Category() {
   const { addItem } = useCart()
 
   useEffect(() => {
+    let cancelled = false
+
     async function load() {
       setLoading(true)
 
@@ -20,7 +23,10 @@ export default function Category() {
         .from('categories')
         .select('*')
         .eq('slug', slug)
+        .eq('is_active', true)
         .single()
+
+      if (cancelled) return
 
       if (!cat) {
         setCategory(null)
@@ -37,10 +43,22 @@ export default function Category() {
         .eq('category_id', cat.id)
         .order('created_at', { ascending: false })
 
+      if (cancelled) return
+
       setProducts(prods || [])
       setLoading(false)
     }
     load()
+
+    function handlePageShow(e) {
+      if (e.persisted) load()
+    }
+    window.addEventListener('pageshow', handlePageShow)
+
+    return () => {
+      cancelled = true
+      window.removeEventListener('pageshow', handlePageShow)
+    }
   }, [slug])
 
   function handleAddToCart(product) {
@@ -70,6 +88,10 @@ export default function Category() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Helmet>
+        <title>{category.name} | Loja MVP</title>
+        <meta name="description" content={`Produtos da categoria ${category.name}. Encontre as melhores ofertas na Loja MVP com frete grátis acima de R$100.`} />
+      </Helmet>
       <nav className="text-sm text-gray-500 mb-4">
         <Link to="/" className="hover:text-gray-700">Inicio</Link>
         <span className="mx-2">/</span>

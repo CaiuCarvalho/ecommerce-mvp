@@ -39,9 +39,12 @@ export default function Layout() {
             )}
 
             {user ? (
-              <button onClick={handleSignOut} className="text-gray-500 hover:text-gray-700">
-                Sair
-              </button>
+              <>
+                <Link to="/minha-conta" className="text-gray-600 hover:text-gray-900">Minha Conta</Link>
+                <button onClick={handleSignOut} className="text-gray-500 hover:text-gray-700">
+                  Sair
+                </button>
+              </>
             ) : (
               <>
                 <Link to="/login" className="text-blue-600 hover:text-blue-800">

@@ -9,12 +9,15 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "audit:secrets": "grep -r 'service_role\\|RESEND_API\\|MP_ACCESS_TOKEN' dist/ && echo 'ALERTA: SECRET ENCONTRADO NO BUNDLE!' || echo 'OK - Nenhum secret sensivel no bundle'",
+    "audit:secrets:win": "findstr /r /s \"service_role RESEND_API MP_ACCESS_TOKEN\" dist\\ && echo ALERTA: SECRET ENCONTRADO! || echo OK - Nenhum secret sensivel no bundle"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-helmet-async": "^3.0.0",
     "react-hot-toast": "^2.5.0",
     "react-router-dom": "^7.1.0"
   },

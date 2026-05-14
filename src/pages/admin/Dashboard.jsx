@@ -142,6 +142,9 @@ export default function Dashboard() {
       </div>
 
       <div className="flex gap-4">
+        <Link to="/admin/categorias" className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50">
+          Gerenciar Categorias
+        </Link>
         <Link to="/admin/produtos" className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50">
           Gerenciar Produtos
         </Link>

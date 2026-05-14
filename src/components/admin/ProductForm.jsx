@@ -304,7 +304,9 @@ export default function ProductForm({ productId = null }) {
               >
                 <option value="">Selecione...</option>
                 {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name} {cat.is_active === false ? '(Inativa)' : ''}
+                  </option>
                 ))}
               </select>
             </div>

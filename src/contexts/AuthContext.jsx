@@ -27,10 +27,11 @@ export function AuthProvider({ children }) {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         setUser(session?.user ?? null)
         if (session?.user) {
-          await fetchProfile(session.user.id)
+          // Wrap in setTimeout to escape the gotrue lock event loop and prevent deadlocks
+          setTimeout(() => fetchProfile(session.user.id), 0)
         } else {
           setProfile(null)
         }
@@ -40,17 +41,31 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe()
   }, [])
 
+  // Refresh session when tab becomes visible again (fixes stale state after MP redirect)
+  useEffect(() => {
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+          setUser(session?.user ?? null)
+          if (session?.user) fetchProfile(session.user.id)
+        })
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [])
+
   async function signIn(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
     return data
   }
 
-  async function signUp(email, password, fullName) {
+  async function signUp(email, password, fullName, phone) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName } }
+      options: { data: { full_name: fullName, phone } }
     })
     if (error) throw error
     return data
