@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,141 +6,74 @@
 
 @layer base {
   :root {
-    --font-sans: 'Inter', sans-serif;
-    --font-serif: 'Playfair Display', serif;
+    /* Apple Design System Colors */
+    --color-midnight-graphite: #1d1d1f;
+    --color-deep-gray: #333333;
+    --color-charcoal-grey: #474747;
+    --color-medium-gray: #707070;
+    --color-light-gray: #858585;
+    --color-light-silver: #c7c7c7;
+    --color-border-silver: #d6d6d6;
+    --color-lightest-gray-background: #e2e2e5;
+    --color-canvas-white: #f5f5f7;
+    --color-pure-white: #ffffff;
+    --color-true-black: #000000;
+    --color-interactive-blue: #0071e3;
+    --color-action-blue: #0066cc;
+    --color-sky-blue-highlight: #2997ff;
     
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-/* ... restante das variáveis ... */
+    /* Shadcn UI compatibility mapped to Apple */
+    --background: var(--color-canvas-white);
+    --foreground: var(--color-midnight-graphite);
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: var(--color-pure-white);
+    --card-foreground: var(--color-midnight-graphite);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: var(--color-pure-white);
+    --popover-foreground: var(--color-midnight-graphite);
 
-    --primary: 38 45% 55%; /* Antique Gold #C5A059 - Mais sofisticado */
-    --primary-foreground: 0 0% 100%;
+    --primary: var(--color-interactive-blue);
+    --primary-foreground: var(--color-pure-white);
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: var(--color-lightest-gray-background);
+    --secondary-foreground: var(--color-midnight-graphite);
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: var(--color-lightest-gray-background);
+    --muted-foreground: var(--color-medium-gray);
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: var(--color-pale-blue-overlay);
+    --accent-foreground: var(--color-midnight-graphite);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: #ff3b30;
+    --destructive-foreground: var(--color-pure-white);
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 38 45% 55%;
+    --border: var(--color-border-silver);
+    --input: var(--color-border-silver);
+    --ring: var(--color-sky-blue-highlight);
 
-    --radius: 0.5rem; /* Bordas um pouco mais nítidas e menores */
+    /* Apple Typography */
+    --font-sf-pro-text: 'SF Pro Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-sf-pro-display: 'SF Pro Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* Apple Border Radius */
+    --radius-cards: 0px;
+    --radius-buttons: 980px;
+    --radius-images: 8px;
+    --radius: 0px; /* Default radius */
   }
 
-  .dark {
-    --background: 240 10% 4%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 5%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 5%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 38 45% 55%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 240 3.7% 12%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 12%;
-    --muted-foreground: 240 5% 60%;
-
-    --accent: 240 3.7% 12%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15%;
-    --input: 240 3.7% 15%;
-    --ring: 38 45% 55%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sf-pro-text);
   }
 }
 
-/* Custom Utilities for Open Design Look */
 @layer utilities {
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  .font-display {
+    font-family: var(--font-sf-pro-display);
+    letter-spacing: -0.28px; /* Typical display tracking */
   }
-  .glass-dark {
-    @apply bg-black/40 backdrop-blur-lg border border-white/10;
-  }
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white/90 to-white/60;
-  }
-  .gold-gradient {
-    @apply bg-gradient-to-r from-[#C5A059] via-[#F9E498] to-[#C5A059];
-  }
-}
-
-/* Human-Crafted Textures & Animations */
-.grain-overlay {
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
-  background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
-  background-repeat: repeat;
-  animation: grain 8s steps(10) infinite;
-  visibility: visible;
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-@keyframes grain {
-  0%, 100% { transform:translate(0, 0) }
-  10% { transform:translate(-5%, -10%) }
-  20% { transform:translate(-15%, 5%) }
-  30% { transform:translate(7%, -25%) }
-  40% { transform:translate(-5%, 25%) }
-  50% { transform:translate(-15%, 10%) }
-  60% { transform:translate(15%, 0%) }
-  70% { transform:translate(0, 15%) }
-  80% { transform:translate(3%, 35%) }
-  90% { transform:translate(-10%, 10%) }
-}
-
-.custom-cursor {
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 10000;
-  mix-blend-mode: difference;
-  transition: transform 0.15s ease-out;
-}
-
-.font-serif {
-  font-family: var(--font-serif);
 }
