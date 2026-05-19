@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { supabase } from '../lib/supabase'
 import toast from 'react-hot-toast'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
+import { Label } from '../components/ui/Label'
+import { Input } from '../components/ui/Input'
+import { Button } from '../components/ui/Button'
+import { Spinner } from '../components/ui/Spinner'
 
 export default function ResetPassword() {
   const navigate = useNavigate()
@@ -40,39 +45,44 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-4 py-16">
+    <div className="flex-1 flex items-center justify-center p-4 py-16">
       <Helmet>
-        <title>Nova Senha | Loja MVP</title>
+        <title>Nova Senha | Agon Imports</title>
       </Helmet>
 
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-2">Criar Nova Senha</h1>
-        <p className="text-sm text-gray-500 mb-6">
-          Digite sua nova senha abaixo.
-        </p>
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1 text-center">
+          <CardTitle className="text-2xl">Criar Nova Senha</CardTitle>
+          <CardDescription>
+            Digite sua nova senha abaixo.
+          </CardDescription>
+        </CardHeader>
+        
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="password">Nova Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nova Senha</label>
-            <input
-              type="password"
-              required
-              minLength={6}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50"
-          >
-            {loading ? 'Salvando...' : 'Salvar nova senha'}
-          </button>
-        </form>
-      </div>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-6"
+            >
+              {loading && <Spinner size="sm" className="mr-2 text-primary-foreground" />}
+              {loading ? 'Salvando...' : 'Salvar nova senha'}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }

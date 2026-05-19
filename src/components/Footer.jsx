@@ -2,46 +2,49 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Agon Imports</h3>
-            <p className="text-sm text-gray-500">
-              Produtos selecionados com entrega para todo o Brasil.
+    <footer className="bg-muted border-t border-border mt-auto">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-1">
+            <h3 className="text-xs font-semibold text-foreground mb-3 tracking-tight">Agon Imports</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Produtos selecionados com entrega para todo o Brasil. O melhor da utilidade e eletrônicos para você.
             </p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Categorias</h3>
-            <ul className="space-y-1 text-sm text-gray-500">
-              <li><Link to="/categoria/utilidade-domestica" className="hover:text-gray-700">Utilidade Domestica</Link></li>
-              <li><Link to="/categoria/ferramentas" className="hover:text-gray-700">Ferramentas</Link></li>
-              <li><Link to="/categoria/beleza-cuidados-pessoais" className="hover:text-gray-700">Beleza e Cuidados</Link></li>
-              <li><Link to="/categoria/eletronicos" className="hover:text-gray-700">Eletronicos</Link></li>
-              <li><Link to="/categoria/pets" className="hover:text-gray-700">Pets</Link></li>
+            <h3 className="text-xs font-semibold text-foreground mb-3 tracking-tight">Categorias</h3>
+            <ul className="space-y-2 text-xs text-muted-foreground">
+              <li><Link to="/categoria/utilidade-domestica" className="hover:text-foreground transition-colors">Utilidade Doméstica</Link></li>
+              <li><Link to="/categoria/ferramentas" className="hover:text-foreground transition-colors">Ferramentas</Link></li>
+              <li><Link to="/categoria/beleza-cuidados-pessoais" className="hover:text-foreground transition-colors">Beleza e Cuidados</Link></li>
+              <li><Link to="/categoria/eletronicos" className="hover:text-foreground transition-colors">Eletrônicos</Link></li>
+              <li><Link to="/categoria/pets" className="hover:text-foreground transition-colors">Pets</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Ajuda</h3>
-            <ul className="space-y-1 text-sm text-gray-500">
-              <li><Link to="/sacola" className="hover:text-gray-700">Minha Sacola</Link></li>
-              <li><Link to="/minha-conta" className="hover:text-gray-700">Minha Conta</Link></li>
-              <li><Link to="/politica-de-privacidade" className="hover:text-gray-700">Política de Privacidade</Link></li>
-              <li><Link to="/termos-de-uso" className="hover:text-gray-700">Termos de Uso</Link></li>
+            <h3 className="text-xs font-semibold text-foreground mb-3 tracking-tight">Ajuda</h3>
+            <ul className="space-y-2 text-xs text-muted-foreground">
+              <li><Link to="/sacola" className="hover:text-foreground transition-colors">Minha Sacola</Link></li>
+              <li><Link to="/minha-conta" className="hover:text-foreground transition-colors">Minha Conta</Link></li>
+              <li><Link to="/politica-de-privacidade" className="hover:text-foreground transition-colors">Política de Privacidade</Link></li>
+              <li><Link to="/termos-de-uso" className="hover:text-foreground transition-colors">Termos de Uso</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-100 mt-8 pt-4 text-center text-xs text-gray-400">
-          Agon Imports {new Date().getFullYear()}. Todos os direitos reservados.{' '}
-          <Link to="/politica-de-privacidade" className="hover:underline">Privacidade</Link>
-          {' · '}
-          <Link to="/termos-de-uso" className="hover:underline">Termos</Link>
+        <div className="border-t border-border mt-10 pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-muted-foreground">
+          <div>
+            Copyright © {new Date().getFullYear()} Agon Imports. Todos os direitos reservados.
+          </div>
+          <div className="flex gap-4 mt-4 md:mt-0">
+            <Link to="/politica-de-privacidade" className="hover:text-foreground transition-colors">Política de Privacidade</Link>
+            <span className="border-l border-border h-3 hidden md:block"></span>
+            <Link to="/termos-de-uso" className="hover:text-foreground transition-colors">Termos de Uso</Link>
+          </div>
         </div>
       </div>
     </footer>
   )
 }
-

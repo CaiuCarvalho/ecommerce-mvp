@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { supabase } from '../lib/supabase'
 import toast from 'react-hot-toast'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '../components/ui/Card'
+import { Label } from '../components/ui/Label'
+import { Input } from '../components/ui/Input'
+import { Button } from '../components/ui/Button'
+import { Spinner } from '../components/ui/Spinner'
+import { CheckCircle2 } from 'lucide-react'
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
@@ -27,57 +33,66 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-4 py-16">
+    <div className="flex-1 flex items-center justify-center p-4 py-16">
       <Helmet>
-        <title>Recuperar Senha | Loja MVP</title>
+        <title>Recuperar Senha | Agon Imports</title>
       </Helmet>
 
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-2">Recuperar Senha</h1>
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1 text-center">
+          <CardTitle className="text-2xl">Recuperar Senha</CardTitle>
+          {!sent && (
+            <CardDescription>
+              Digite o e-mail associado à sua conta para receber um link de recuperação.
+            </CardDescription>
+          )}
+        </CardHeader>
         
-        {sent ? (
-          <div className="text-center py-6">
-            <svg className="w-12 h-12 text-green-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="text-gray-700 mb-4">Se houver uma conta associada a este email, você receberá um link para redefinir sua senha.</p>
-            <Link to="/login" className="text-blue-600 hover:underline">Voltar para o Login</Link>
-          </div>
-        ) : (
-          <>
-            <p className="text-sm text-gray-500 mb-6">
-              Digite o e-mail associado à sua conta e enviaremos um link para você criar uma nova senha.
-            </p>
-
+        <CardContent>
+          {sent ? (
+            <div className="flex flex-col items-center justify-center text-center py-6 space-y-4">
+              <CheckCircle2 className="w-12 h-12 text-primary" />
+              <p className="text-muted-foreground text-sm">
+                Se houver uma conta associada a este email, você receberá um link para redefinir sua senha.
+              </p>
+              <Button asChild variant="outline" className="mt-4">
+                <Link to="/login">Voltar para o Login</Link>
+              </Button>
+            </div>
+          ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="email">E-mail</Label>
+                <Input
+                  id="email"
                   type="email"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="nome@exemplo.com"
                 />
               </div>
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50"
+                className="w-full mt-6"
               >
+                {loading && <Spinner size="sm" className="mr-2 text-primary-foreground" />}
                 {loading ? 'Enviando...' : 'Enviar link de recuperação'}
-              </button>
+              </Button>
             </form>
-
-            <div className="mt-6 text-center">
-              <Link to="/login" className="text-sm text-blue-600 hover:underline">
-                Lembrei minha senha
-              </Link>
-            </div>
-          </>
+          )}
+        </CardContent>
+        
+        {!sent && (
+          <CardFooter className="flex justify-center border-t border-border pt-6">
+            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground font-medium hover:underline transition-colors">
+              Lembrei minha senha
+            </Link>
+          </CardFooter>
         )}
-      </div>
+      </Card>
     </div>
   )
 }
