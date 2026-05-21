@@ -44,13 +44,13 @@ export default {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
-        /* Apple Specific Direct Colors */
-        apple: {
-          blue: "var(--color-interactive-blue)",
-          "blue-hover": "var(--color-action-blue)",
-          gray: "var(--color-medium-gray)",
-          "light-gray": "var(--color-light-gray)",
-          "midnight": "var(--color-midnight-graphite)",
+        /* AGON Specific Direct Colors */
+        agon: {
+          navy: "var(--color-agon-navy)",
+          "navy-light": "var(--color-agon-navy-light)",
+          "navy-dark": "var(--color-agon-navy-dark)",
+          orange: "var(--color-agon-orange)",
+          "orange-hover": "var(--color-agon-orange-hover)",
         }
       },
       borderRadius: {
@@ -60,11 +60,11 @@ export default {
         full: "var(--radius-buttons)",
       },
       fontFamily: {
-        sans: ["SF Pro Text", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
-        display: ["SF Pro Display", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        display: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
       },
       boxShadow: {
-        'apple': 'rgba(0, 0, 0, 0.22) 3px 5px 30px 0px',
+        'agon': 'rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
       }
     },
   },

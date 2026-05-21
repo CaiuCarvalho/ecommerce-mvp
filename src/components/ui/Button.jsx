@@ -7,11 +7,11 @@ const Button = React.forwardRef(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apple-blue focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+          "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agon-orange focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
           {
-            "bg-apple-blue text-white hover:bg-apple-blue-hover": variant === "default",
+            "bg-agon-orange text-white hover:bg-agon-orange-hover": variant === "default",
             "bg-destructive text-destructive-foreground hover:bg-destructive/90": variant === "destructive",
-            "border border-apple-blue text-apple-blue bg-transparent hover:bg-apple-blue hover:text-white": variant === "outline",
+            "border border-agon-orange text-agon-orange bg-transparent hover:bg-agon-orange hover:text-white": variant === "outline",
             "bg-secondary text-secondary-foreground hover:bg-secondary/80": variant === "secondary",
             "hover:bg-muted text-foreground": variant === "ghost",
             "py-[11px] px-[21px]": size === "default",

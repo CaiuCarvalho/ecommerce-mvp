@@ -77,14 +77,21 @@ export default function Home() {
         <meta name="description" content="Encontre os melhores produtos em diversas categorias com frete grátis acima de R$100. Utilidades domésticas, ferramentas, beleza, brinquedos e mais." />
       </Helmet>
       
-      <div className="mb-10 text-center max-w-xl mx-auto">
-        <motion.h1 variants={slideUp} className="text-3xl md:text-4xl font-black tracking-tight mb-3 uppercase">
-          Linha <span className="text-primary italic">Exclusive</span>
-        </motion.h1>
-        <motion.p variants={slideUp} className="text-muted-foreground text-sm tracking-wide">
-          Curadoria de luxo com foco em design e qualidade excepcional.
-        </motion.p>
-      </div>
+      {/* Hero Banner */}
+      <motion.div variants={slideUp} className="mb-10 relative rounded-3xl overflow-hidden shadow-2xl h-64 md:h-80 flex items-center justify-center">
+        <div className="absolute inset-0 bg-agon-navy/60 z-10" />
+        <img src="/warehouse_hero.png" alt="AGON Imports Warehouse" className="absolute inset-0 w-full h-full object-cover" />
+        
+        <div className="relative z-20 text-center px-4 w-full max-w-2xl">
+          <h1 className="text-3xl md:text-5xl font-black tracking-widest text-white mb-6 uppercase drop-shadow-md">
+            Catálogo de Produtos
+          </h1>
+          <div className="flex bg-white rounded-full p-1.5 max-w-xl mx-auto shadow-xl">
+             <input type="text" placeholder="Digite o nome do produto" className="flex-1 bg-transparent border-none px-5 outline-none text-sm font-medium text-agon-navy placeholder:text-gray-400" />
+             <Button className="rounded-full px-8 py-3 font-bold tracking-widest text-xs h-auto uppercase">Buscar</Button>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Category filter */}
       <motion.div variants={slideUp} className="flex flex-wrap justify-center gap-2 mb-10">
@@ -159,7 +166,7 @@ export default function Home() {
                   {...hoverScale}
                   className={isFeatured ? "col-span-2 row-span-1 md:col-span-2 md:row-span-2" : ""}
                 >
-                  <Card className={`overflow-hidden border-none bg-secondary/20 hover:bg-secondary/40 transition-colors group rounded-2xl h-full flex flex-col ${isFeatured ? 'bg-secondary/10 border border-primary/10 shadow-2xl shadow-primary/5' : ''}`}>
+                  <Card className={`overflow-hidden border-none bg-agon-white hover:bg-gray-50 transition-colors group rounded-2xl h-full flex flex-col shadow-sm hover:shadow-md border border-agon-border ${isFeatured ? 'bg-agon-light-bg shadow-xl shadow-agon-orange/10 border-agon-orange/20' : ''}`}>
                     <Link to={`/produto/${product.id}`} className="relative block flex-1 overflow-hidden">
                       {mainImage ? (
                         <img 
