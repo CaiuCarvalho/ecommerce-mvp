@@ -109,39 +109,41 @@ export default function Dashboard() {
         {recentOrders.length === 0 ? (
           <p className="px-5 py-8 text-center text-gray-500 text-sm">Nenhum pedido ainda.</p>
         ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="text-left px-5 py-2 font-medium text-gray-600">Pedido</th>
-                <th className="text-left px-5 py-2 font-medium text-gray-600">Cliente</th>
-                <th className="text-left px-5 py-2 font-medium text-gray-600">Status</th>
-                <th className="text-right px-5 py-2 font-medium text-gray-600">Total</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {recentOrders.map(order => {
-                const s = STATUS_LABELS[order.status] || { label: order.status, color: 'bg-gray-100 text-gray-700' }
-                return (
-                  <tr key={order.id} className="hover:bg-gray-50">
-                    <td className="px-5 py-2">
-                      <Link to={`/admin/pedidos/${order.id}`} className="text-blue-600 hover:underline font-mono text-xs">
-                        #{order.id.slice(0, 8)}
-                      </Link>
-                    </td>
-                    <td className="px-5 py-2 text-gray-700">{order.profiles?.full_name || 'Cliente'}</td>
-                    <td className="px-5 py-2">
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${s.color}`}>{s.label}</span>
-                    </td>
-                    <td className="px-5 py-2 text-right font-medium">{formatPrice(order.total)}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="text-left px-5 py-2 font-medium text-gray-600">Pedido</th>
+                  <th className="text-left px-5 py-2 font-medium text-gray-600">Cliente</th>
+                  <th className="text-left px-5 py-2 font-medium text-gray-600">Status</th>
+                  <th className="text-right px-5 py-2 font-medium text-gray-600">Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {recentOrders.map(order => {
+                  const s = STATUS_LABELS[order.status] || { label: order.status, color: 'bg-gray-100 text-gray-700' }
+                  return (
+                    <tr key={order.id} className="hover:bg-gray-50">
+                      <td className="px-5 py-2">
+                        <Link to={`/admin/pedidos/${order.id}`} className="text-blue-600 hover:underline font-mono text-xs">
+                          #{order.id.slice(0, 8)}
+                        </Link>
+                      </td>
+                      <td className="px-5 py-2 text-gray-700">{order.profiles?.full_name || 'Cliente'}</td>
+                      <td className="px-5 py-2">
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${s.color}`}>{s.label}</span>
+                      </td>
+                      <td className="px-5 py-2 text-right font-medium">{formatPrice(order.total)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         <Link to="/admin/categorias" className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50">
           Gerenciar Categorias
         </Link>

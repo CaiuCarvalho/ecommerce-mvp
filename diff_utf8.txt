@@ -1,0 +1,1050 @@
+﻿diff --git a/src/components/Footer.jsx b/src/components/Footer.jsx
+index a6683cb..f0af6e5 100644
+--- a/src/components/Footer.jsx
++++ b/src/components/Footer.jsx
+@@ -2,46 +2,46 @@ import { Link } from 'react-router-dom'
+ 
+ export default function Footer() {
+   return (
+-    <footer className="bg-agon-navy text-gray-300 mt-auto">
++    <footer className="bg-secondary text-secondary-foreground border-t border-border mt-auto font-sans">
+       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+           <div className="md:col-span-1">
+-            <h3 className="text-xs font-semibold text-white mb-3 tracking-tight">Agon Imports</h3>
+-            <p className="text-xs text-gray-400 leading-relaxed">
++            <h3 className="text-sm font-semibold text-foreground mb-3 tracking-tight">Agon Imports</h3>
++            <p className="text-xs text-muted-foreground leading-relaxed">
+               Produtos selecionados com entrega para todo o Brasil. O melhor da utilidade e eletr├┤nicos para voc├¬.
+             </p>
+           </div>
+ 
+           <div>
+-            <h3 className="text-xs font-semibold text-white mb-3 tracking-tight">Categorias</h3>
+-            <ul className="space-y-2 text-xs text-gray-400">
+-              <li><Link to="/categoria/utilidade-domestica" className="hover:text-white transition-colors">Utilidade Dom├®stica</Link></li>
+-              <li><Link to="/categoria/ferramentas" className="hover:text-white transition-colors">Ferramentas</Link></li>
+-              <li><Link to="/categoria/beleza-cuidados-pessoais" className="hover:text-white transition-colors">Beleza e Cuidados</Link></li>
+-              <li><Link to="/categoria/eletronicos" className="hover:text-white transition-colors">Eletr├┤nicos</Link></li>
+-              <li><Link to="/categoria/pets" className="hover:text-white transition-colors">Pets</Link></li>
++            <h3 className="text-xs font-semibold text-foreground mb-3 tracking-tight uppercase">Categorias</h3>
++            <ul className="space-y-2 text-xs text-muted-foreground">
++              <li><Link to="/categoria/utilidade-domestica" className="hover:text-foreground transition-colors">Utilidade Dom├®stica</Link></li>
++              <li><Link to="/categoria/ferramentas" className="hover:text-foreground transition-colors">Ferramentas</Link></li>
++              <li><Link to="/categoria/beleza-cuidados-pessoais" className="hover:text-foreground transition-colors">Beleza e Cuidados</Link></li>
++              <li><Link to="/categoria/eletronicos" className="hover:text-foreground transition-colors">Eletr├┤nicos</Link></li>
++              <li><Link to="/categoria/pets" className="hover:text-foreground transition-colors">Pets</Link></li>
+             </ul>
+           </div>
+ 
+           <div>
+-            <h3 className="text-xs font-semibold text-white mb-3 tracking-tight">Ajuda</h3>
+-            <ul className="space-y-2 text-xs text-gray-400">
+-              <li><Link to="/sacola" className="hover:text-white transition-colors">Minha Sacola</Link></li>
+-              <li><Link to="/minha-conta" className="hover:text-white transition-colors">Minha Conta</Link></li>
+-              <li><Link to="/politica-de-privacidade" className="hover:text-white transition-colors">Pol├¡tica de Privacidade</Link></li>
+-              <li><Link to="/termos-de-uso" className="hover:text-white transition-colors">Termos de Uso</Link></li>
++            <h3 className="text-xs font-semibold text-foreground mb-3 tracking-tight uppercase">Ajuda</h3>
++            <ul className="space-y-2 text-xs text-muted-foreground">
++              <li><Link to="/sacola" className="hover:text-foreground transition-colors">Minha Sacola</Link></li>
++              <li><Link to="/minha-conta" className="hover:text-foreground transition-colors">Minha Conta</Link></li>
++              <li><Link to="/politica-de-privacidade" className="hover:text-foreground transition-colors">Pol├¡tica de Privacidade</Link></li>
++              <li><Link to="/termos-de-uso" className="hover:text-foreground transition-colors">Termos de Uso</Link></li>
+             </ul>
+           </div>
+         </div>
+ 
+-        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-gray-400">
++        <div className="border-t border-border mt-10 pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-muted-foreground">
+           <div>
+             Copyright ┬® {new Date().getFullYear()} Agon Imports. Todos os direitos reservados.
+           </div>
+-          <div className="flex gap-4 mt-4 md:mt-0">
+-            <Link to="/politica-de-privacidade" className="hover:text-white transition-colors">Pol├¡tica de Privacidade</Link>
+-            <span className="border-l border-white/10 h-3 hidden md:block"></span>
+-            <Link to="/termos-de-uso" className="hover:text-white transition-colors">Termos de Uso</Link>
++          <div className="flex gap-4 mt-4 md:mt-0 items-center">
++            <Link to="/politica-de-privacidade" className="hover:text-foreground transition-colors">Pol├¡tica de Privacidade</Link>
++            <span className="border-l border-border h-3 hidden md:block"></span>
++            <Link to="/termos-de-uso" className="hover:text-foreground transition-colors">Termos de Uso</Link>
+           </div>
+         </div>
+       </div>
+diff --git a/src/components/Layout.jsx b/src/components/Layout.jsx
+index 01ea558..a1fbc34 100644
+--- a/src/components/Layout.jsx
++++ b/src/components/Layout.jsx
+@@ -1,60 +1,27 @@
+-import { Link, Outlet, useNavigate } from 'react-router-dom'
+-import { useAuth } from '../contexts/AuthContext'
+-import { useCart } from '../contexts/CartContext'
+-import Footer from './Footer'
+-import { useTheme } from './ThemeProvider'
+-import { Moon, Sun, ShoppingBag, User, Settings, LogOut, Bell, Headset } from 'lucide-react'
+-import { Button } from './ui/Button'
+-import { motion } from 'framer-motion'
+-import { slideDown } from '../lib/animations'
+-import { useEffect, useState } from 'react'
++import { Outlet } from 'react-router-dom'
++import { useState } from 'react'
++import Header from './Header'
+ import Sidebar from './Sidebar'
++import Footer from './Footer'
+ 
+ export default function Layout() {
+-  const { user } = useAuth()
+-  const { theme, setTheme } = useTheme()
++  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+ 
+   return (
+-    <div className="min-h-screen bg-background text-foreground flex font-sans selection:bg-primary/30">
++    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30">
+       
+-      <Sidebar />
+-
+-      {/* Main Content Area - margin-left on desktop to account for fixed sidebar */}
+-      <div className="flex-1 flex flex-col min-w-0 lg:ml-64 relative">
+-        
+-        {/* Top Action Bar (Desktop only, mobile has it in sidebar/topbar) */}
+-        <header className="hidden lg:flex h-20 items-center justify-end px-8 sticky top-0 z-30 bg-background/80 backdrop-blur-md">
+-          <div className="flex items-center gap-6">
+-            <button className="text-muted-foreground hover:text-primary transition-colors flex flex-col items-center gap-1 group">
+-              <Bell className="w-5 h-5 group-hover:scale-110 transition-transform" />
+-              <span className="text-[9px] font-black tracking-widest text-agon-orange uppercase">NOT</span>
+-            </button>
+-            <button className="text-muted-foreground hover:text-primary transition-colors flex flex-col items-center gap-1 group">
+-              <Headset className="w-5 h-5 group-hover:scale-110 transition-transform" />
+-              <span className="text-[9px] font-black tracking-widest text-agon-orange uppercase">SUP</span>
+-            </button>
+-            <Link to={user ? "/minha-conta" : "/login"} className="text-muted-foreground hover:text-primary transition-colors flex flex-col items-center gap-1 group">
+-              <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
+-              <span className="text-[9px] font-black tracking-widest text-agon-orange uppercase">PER</span>
+-            </Link>
++      {/* Header Fixo Global */}
++      <Header onOpenSidebar={() => setIsSidebarOpen(true)} />
+ 
+-            <div className="h-6 w-px bg-border mx-2" />
++      {/* Sidebar Controlada Pelo Layout */}
++      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+ 
+-            <button
+-              className="p-2 text-muted-foreground hover:text-foreground transition-colors bg-secondary rounded-full"
+-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+-            >
+-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+-            </button>
+-          </div>
+-        </header>
+-
+-        <main className="flex-1 flex flex-col pt-20 lg:pt-0">
+-          <Outlet />
+-        </main>
+-        
+-        <Footer />
+-      </div>
++      {/* Main Content Area */}
++      <main className="flex-1 flex flex-col w-full relative">
++        <Outlet />
++      </main>
++      
++      <Footer />
+     </div>
+   )
+ }
+diff --git a/src/components/Sidebar.jsx b/src/components/Sidebar.jsx
+index de060ce..82402f5 100644
+--- a/src/components/Sidebar.jsx
++++ b/src/components/Sidebar.jsx
+@@ -1,4 +1,4 @@
+-import { useState, useEffect } from 'react'
++import { useState } from 'react'
+ import { Link, useLocation } from 'react-router-dom'
+ import { motion, AnimatePresence } from 'framer-motion'
+ import {
+@@ -6,28 +6,37 @@ import {
+   Store,
+   Wallet,
+   Headset,
+-  Menu,
+   X,
+-  Bell,
+-  User,
+   LogOut,
+-  Settings
++  Settings,
++  ChevronDown,
++  Tag
+ } from 'lucide-react'
+ import { useAuth } from '../contexts/AuthContext'
+ import { useCart } from '../contexts/CartContext'
+-import { useTheme } from './ThemeProvider'
+ import { Button } from './ui/Button'
++import { useQuery } from '@tanstack/react-query'
++import { queryKeys } from '../lib/queryKeys'
++import { supabase } from '../lib/supabase'
+ 
+-export default function Sidebar() {
+-  const [isOpen, setIsOpen] = useState(false)
++export default function Sidebar({ isOpen, onClose }) {
+   const location = useLocation()
+   const { user, isAdmin, signOut } = useAuth()
+   const { totalItems } = useCart()
++  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false)
+ 
+-  // Fechar sidebar ao mudar de rota no mobile
+-  useEffect(() => {
+-    setIsOpen(false)
+-  }, [location.pathname])
++  const { data: categories = [] } = useQuery({
++    queryKey: queryKeys.categories.active(),
++    queryFn: async () => {
++      const { data, error } = await supabase
++        .from('categories')
++        .select('*')
++        .eq('is_active', true)
++        .order('name')
++      if (error) throw error
++      return data || []
++    }
++  })
+ 
+   const menuItems = [
+     { name: 'Cat├ílogo de Produtos', path: '/', icon: Store },
+@@ -39,18 +48,23 @@ export default function Sidebar() {
+   const SidebarContent = () => (
+     <div className="flex flex-col h-full bg-agon-navy text-white">
+       {/* Logo */}
+-      <div className="p-6 pb-10 flex items-center justify-center">
+-        <Link to="/" className="flex flex-col items-center gap-2 group">
+-          <svg width="80" height="40" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-agon-orange group-hover:scale-105 transition-transform">
+-            <path d="M10,40 Q30,10 50,40 Q70,20 90,40" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
+-            <circle cx="75" cy="25" r="4" fill="currentColor" />
+-          </svg>
+-          <span className="text-2xl font-black tracking-widest uppercase mt-2">AGON</span>
++      <div className="p-6 pb-10 flex items-center justify-center relative">
++        <button 
++          onClick={onClose}
++          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 lg:hidden"
++          aria-label="Fechar menu"
++        >
++          <X className="w-6 h-6" />
++        </button>
++        <Link to="/" onClick={onClose} className="flex flex-col items-center gap-2 group mt-4">
++          <span className="text-2xl font-black tracking-widest uppercase mt-2 text-agon-orange group-hover:scale-105 transition-transform">
++            AGON
++          </span>
+         </Link>
+       </div>
+ 
+       {/* Navega├º├úo principal */}
+-      <nav className="flex-1 px-4 space-y-2">
++      <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
+         {menuItems.map((item) => {
+           const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path))
+           const Icon = item.icon
+@@ -59,6 +73,7 @@ export default function Sidebar() {
+             <Link
+               key={item.path}
+               to={item.path}
++              onClick={onClose}
+               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-bold uppercase text-xs tracking-wider ${
+                 isActive 
+                   ? 'bg-agon-orange text-white' 
+@@ -76,9 +91,47 @@ export default function Sidebar() {
+           )
+         })}
+ 
++        <div className="mt-2">
++          <button
++            onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
++            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors font-bold uppercase text-xs tracking-wider text-gray-400 hover:text-white hover:bg-agon-navy-light`}
++          >
++            <div className="flex items-center gap-3">
++              <Tag className="w-5 h-5" />
++              <span>Categorias</span>
++            </div>
++            <ChevronDown className={`w-4 h-4 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} />
++          </button>
++          
++          <AnimatePresence>
++            {isCategoriesOpen && (
++              <motion.div
++                initial={{ height: 0, opacity: 0 }}
++                animate={{ height: 'auto', opacity: 1 }}
++                exit={{ height: 0, opacity: 0 }}
++                className="overflow-hidden"
++              >
++                <div className="flex flex-col pl-12 pr-4 py-2 space-y-3 mt-1 bg-agon-navy-light/30 rounded-xl">
++                  {categories.map(cat => (
++                    <Link
++                      key={cat.id}
++                      to={`/categoria/${cat.slug}`}
++                      onClick={onClose}
++                      className="text-gray-400 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
++                    >
++                      {cat.name}
++                    </Link>
++                  ))}
++                </div>
++              </motion.div>
++            )}
++          </AnimatePresence>
++        </div>
++
+         {isAdmin && (
+           <Link
+             to="/admin"
++            onClick={onClose}
+             className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-bold uppercase text-xs tracking-wider text-gray-400 hover:text-white hover:bg-agon-navy-light mt-4 border border-white/10"
+           >
+             <Settings className="w-5 h-5" />
+@@ -92,7 +145,10 @@ export default function Sidebar() {
+         {user ? (
+            <Button 
+             variant="outline" 
+-            onClick={signOut}
++            onClick={() => {
++              signOut()
++              onClose()
++            }}
+             className="w-full border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white flex items-center gap-2"
+           >
+             <LogOut className="w-4 h-4" />
+@@ -101,6 +157,7 @@ export default function Sidebar() {
+         ) : (
+           <Button 
+             className="w-full bg-white text-agon-navy hover:bg-gray-100 font-bold uppercase tracking-wider text-xs py-3 rounded-full"
++            onClick={onClose}
+             asChild
+           >
+             <Link to="/cadastro">Crie um Cadastro</Link>
+@@ -111,53 +168,29 @@ export default function Sidebar() {
+   )
+ 
+   return (
+-    <>
+-      {/* Desktop Sidebar */}
+-      <aside className="hidden lg:flex flex-col w-64 fixed inset-y-0 left-0 z-50 bg-agon-navy">
+-        <SidebarContent />
+-      </aside>
+-
+-      {/* Mobile Topbar & Hamburger */}
+-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-agon-navy z-40 flex items-center justify-between px-4">
+-        <button 
+-          onClick={() => setIsOpen(true)}
+-          className="p-2 text-white hover:bg-white/10 rounded-lg"
+-        >
+-          <Menu className="w-6 h-6" />
+-        </button>
+-        <span className="text-white font-black tracking-widest text-lg">AGON</span>
+-        <div className="w-10"></div> {/* Spacer for centering */}
+-      </div>
+-
+-      {/* Mobile Sidebar Overlay */}
+-      <AnimatePresence>
+-        {isOpen && (
+-          <>
+-            <motion.div 
+-              initial={{ opacity: 0 }}
+-              animate={{ opacity: 1 }}
+-              exit={{ opacity: 0 }}
+-              onClick={() => setIsOpen(false)}
+-              className="fixed inset-0 bg-black/60 z-50 lg:hidden"
+-            />
+-            <motion.aside
+-              initial={{ x: '-100%' }}
+-              animate={{ x: 0 }}
+-              exit={{ x: '-100%' }}
+-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+-              className="fixed inset-y-0 left-0 w-3/4 max-w-sm z-50 bg-agon-navy lg:hidden shadow-2xl"
+-            >
+-              <button 
+-                onClick={() => setIsOpen(false)}
+-                className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/10"
+-              >
+-                <X className="w-6 h-6" />
+-              </button>
+-              <SidebarContent />
+-            </motion.aside>
+-          </>
+-        )}
+-      </AnimatePresence>
+-    </>
++    <AnimatePresence>
++      {isOpen && (
++        <>
++          {/* Overlay Escuro */}
++          <motion.div 
++            initial={{ opacity: 0 }}
++            animate={{ opacity: 1 }}
++            exit={{ opacity: 0 }}
++            onClick={onClose}
++            className="fixed inset-0 bg-black/60 z-50 lg:hidden"
++          />
++          {/* Menu Drawer */}
++          <motion.aside
++            initial={{ x: '-100%' }}
++            animate={{ x: 0 }}
++            exit={{ x: '-100%' }}
++            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
++            className="fixed inset-y-0 left-0 w-3/4 max-w-sm z-50 bg-agon-navy lg:hidden shadow-2xl"
++          >
++            <SidebarContent />
++          </motion.aside>
++        </>
++      )}
++    </AnimatePresence>
+   )
+ }
+diff --git a/src/components/ui/Button.jsx b/src/components/ui/Button.jsx
+index 3c774a2..53a751a 100644
+--- a/src/components/ui/Button.jsx
++++ b/src/components/ui/Button.jsx
+@@ -9,11 +9,11 @@ const Button = React.forwardRef(
+         className={cn(
+           "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agon-orange focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+           {
+-            "bg-agon-orange text-white hover:bg-agon-orange-hover": variant === "default",
++            "bg-agon-orange text-white hover:bg-agon-orange-hover": variant === "default" || variant === "primary",
+             "bg-destructive text-destructive-foreground hover:bg-destructive/90": variant === "destructive",
+-            "border border-agon-orange text-agon-orange bg-transparent hover:bg-agon-orange hover:text-white": variant === "outline",
++            "border border-action-blue text-action-blue bg-transparent hover:bg-action-blue/10": variant === "outline",
+             "bg-secondary text-secondary-foreground hover:bg-secondary/80": variant === "secondary",
+-            "hover:bg-muted text-foreground": variant === "ghost",
++            "hover:bg-muted text-foreground bg-transparent": variant === "ghost",
+             "py-[11px] px-[21px]": size === "default",
+             "h-9 px-4": size === "sm",
+             "h-12 px-8 text-base": size === "lg",
+diff --git a/src/components/ui/Card.jsx b/src/components/ui/Card.jsx
+index 78bb68d..3be6598 100644
+--- a/src/components/ui/Card.jsx
++++ b/src/components/ui/Card.jsx
+@@ -5,7 +5,7 @@ const Card = React.forwardRef(({ className, ...props }, ref) => (
+   <div
+     ref={ref}
+     className={cn(
+-      "rounded-2xl bg-card text-card-foreground border border-border shadow-agon",
++      "rounded-md bg-card text-card-foreground border border-border shadow-agon",
+       className
+     )}
+     {...props}
+diff --git a/src/components/ui/Input.jsx b/src/components/ui/Input.jsx
+index a47f5da..deb429f 100644
+--- a/src/components/ui/Input.jsx
++++ b/src/components/ui/Input.jsx
+@@ -6,7 +6,7 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
+     <input
+       type={type}
+       className={cn(
+-        "flex h-12 w-full rounded-xl border border-border bg-background px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agon-orange focus-visible:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300",
++        "flex h-12 w-full rounded-inputs border border-border bg-background px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agon-orange/40 focus-visible:border-agon-orange disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300",
+         className
+       )}
+       ref={ref}
+diff --git a/src/features/admin/pages/Dashboard.jsx b/src/features/admin/pages/Dashboard.jsx
+index 2f2ea82..24fed94 100644
+--- a/src/features/admin/pages/Dashboard.jsx
++++ b/src/features/admin/pages/Dashboard.jsx
+@@ -109,39 +109,41 @@ export default function Dashboard() {
+         {recentOrders.length === 0 ? (
+           <p className="px-5 py-8 text-center text-gray-500 text-sm">Nenhum pedido ainda.</p>
+         ) : (
+-          <table className="w-full text-sm">
+-            <thead className="bg-gray-50 border-b border-gray-200">
+-              <tr>
+-                <th className="text-left px-5 py-2 font-medium text-gray-600">Pedido</th>
+-                <th className="text-left px-5 py-2 font-medium text-gray-600">Cliente</th>
+-                <th className="text-left px-5 py-2 font-medium text-gray-600">Status</th>
+-                <th className="text-right px-5 py-2 font-medium text-gray-600">Total</th>
+-              </tr>
+-            </thead>
+-            <tbody className="divide-y divide-gray-100">
+-              {recentOrders.map(order => {
+-                const s = STATUS_LABELS[order.status] || { label: order.status, color: 'bg-gray-100 text-gray-700' }
+-                return (
+-                  <tr key={order.id} className="hover:bg-gray-50">
+-                    <td className="px-5 py-2">
+-                      <Link to={`/admin/pedidos/${order.id}`} className="text-blue-600 hover:underline font-mono text-xs">
+-                        #{order.id.slice(0, 8)}
+-                      </Link>
+-                    </td>
+-                    <td className="px-5 py-2 text-gray-700">{order.profiles?.full_name || 'Cliente'}</td>
+-                    <td className="px-5 py-2">
+-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${s.color}`}>{s.label}</span>
+-                    </td>
+-                    <td className="px-5 py-2 text-right font-medium">{formatPrice(order.total)}</td>
+-                  </tr>
+-                )
+-              })}
+-            </tbody>
+-          </table>
++          <div className="overflow-x-auto">
++            <table className="w-full text-sm">
++              <thead className="bg-gray-50 border-b border-gray-200">
++                <tr>
++                  <th className="text-left px-5 py-2 font-medium text-gray-600">Pedido</th>
++                  <th className="text-left px-5 py-2 font-medium text-gray-600">Cliente</th>
++                  <th className="text-left px-5 py-2 font-medium text-gray-600">Status</th>
++                  <th className="text-right px-5 py-2 font-medium text-gray-600">Total</th>
++                </tr>
++              </thead>
++              <tbody className="divide-y divide-gray-100">
++                {recentOrders.map(order => {
++                  const s = STATUS_LABELS[order.status] || { label: order.status, color: 'bg-gray-100 text-gray-700' }
++                  return (
++                    <tr key={order.id} className="hover:bg-gray-50">
++                      <td className="px-5 py-2">
++                        <Link to={`/admin/pedidos/${order.id}`} className="text-blue-600 hover:underline font-mono text-xs">
++                          #{order.id.slice(0, 8)}
++                        </Link>
++                      </td>
++                      <td className="px-5 py-2 text-gray-700">{order.profiles?.full_name || 'Cliente'}</td>
++                      <td className="px-5 py-2">
++                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${s.color}`}>{s.label}</span>
++                      </td>
++                      <td className="px-5 py-2 text-right font-medium">{formatPrice(order.total)}</td>
++                    </tr>
++                  )
++                })}
++              </tbody>
++            </table>
++          </div>
+         )}
+       </div>
+ 
+-      <div className="flex gap-4">
++      <div className="flex flex-wrap gap-4">
+         <Link to="/admin/categorias" className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50">
+           Gerenciar Categorias
+         </Link>
+diff --git a/src/features/products/pages/Home.jsx b/src/features/products/pages/Home.jsx
+index 232883c..5dfd381 100644
+--- a/src/features/products/pages/Home.jsx
++++ b/src/features/products/pages/Home.jsx
+@@ -70,46 +70,46 @@ export default function Home() {
+       initial="initial"
+       animate="animate"
+       variants={fadeIn}
+-      className="max-w-6xl mx-auto px-4 py-8"
++      className="max-w-6xl mx-auto px-4 py-8 mb-20"
+     >
+       <Helmet>
+-        <title>Agon Imports | Melhores Produtos com Frete Gr├ítis</title>
+-        <meta name="description" content="Encontre os melhores produtos em diversas categorias com frete gr├ítis acima de R$100. Utilidades dom├®sticas, ferramentas, beleza, brinquedos e mais." />
++        <title>Agon Imports | Melhores Produtos</title>
++        <meta name="description" content="Encontre os melhores produtos em diversas categorias com frete gr├ítis acima de R$100." />
+       </Helmet>
+       
+-      {/* Hero Banner */}
+-      <motion.div variants={slideUp} className="mb-10 relative rounded-3xl overflow-hidden shadow-2xl h-64 md:h-80 flex items-center justify-center">
+-        <div className="absolute inset-0 bg-agon-navy/60 z-10" />
+-        <img src="/warehouse_hero.png" alt="AGON Imports Warehouse" className="absolute inset-0 w-full h-full object-cover" />
+-        
+-        <div className="relative z-20 text-center px-4 w-full max-w-2xl">
+-          <h1 className="text-3xl md:text-5xl font-black tracking-widest text-white mb-6 uppercase drop-shadow-md">
+-            Cat├ílogo de Produtos
+-          </h1>
+-          <div className="flex bg-white rounded-full p-1.5 max-w-xl mx-auto shadow-xl">
+-             <input type="text" placeholder="Digite o nome do produto" className="flex-1 bg-transparent border-none px-5 outline-none text-sm font-medium text-agon-navy placeholder:text-gray-400" />
+-             <Button className="rounded-full px-8 py-3 font-bold tracking-widest text-xs h-auto uppercase">Buscar</Button>
+-          </div>
++      {/* Clean Apple-style Hero Banner */}
++      <motion.div variants={slideUp} className="mb-16 mt-8 md:mt-16 text-center flex flex-col items-center justify-center">
++        <h1 className="text-display-xl md:text-display-giant font-display font-semibold text-foreground mb-4 max-w-4xl tracking-tight">
++          O melhor da utilidade e inova├º├úo para o seu <span className="text-agon-orange">dia a dia.</span>
++        </h1>
++        <p className="text-subheading text-muted-foreground max-w-2xl mx-auto mb-8 font-sans">
++          Produtos selecionados rigorosamente para garantir qualidade, design e um excelente custo-benef├¡cio. Entregamos para todo o Brasil.
++        </p>
++        <div className="flex items-center gap-4">
++           <Button size="lg" className="rounded-full px-8" onClick={() => window.scrollTo({ top: 500, behavior: 'smooth' })}>
++             Ver Ofertas
++           </Button>
++           <Button variant="outline" size="lg" className="rounded-full px-8 text-foreground" onClick={() => window.scrollTo({ top: 400, behavior: 'smooth' })}>
++             Categorias
++           </Button>
+         </div>
+       </motion.div>
+ 
+       {/* Category filter */}
+-      <motion.div variants={slideUp} className="flex flex-wrap justify-center gap-2 mb-10">
++      <motion.div variants={slideUp} className="hidden md:flex flex-wrap justify-center gap-3 mb-12">
+         <Button
+-          variant={!activeCategory ? "default" : "ghost"}
+-          size="sm"
++          variant={!activeCategory ? "secondary" : "ghost"}
+           onClick={() => setActiveCategory(null)}
+-          className="rounded-full px-4 h-8 transition-all duration-300 uppercase text-[9px] tracking-[0.15em] font-bold"
++          className={`rounded-full px-5 h-10 transition-all duration-300 font-medium text-sm ${!activeCategory ? 'bg-foreground text-background hover:bg-foreground/90' : 'text-muted-foreground hover:bg-secondary'}`}
+         >
+-          Todos
++          Todos os Produtos
+         </Button>
+         {categories.map(cat => (
+           <Button
+             key={cat.id}
+-            variant={activeCategory === cat.id ? "default" : "ghost"}
+-            size="sm"
++            variant={activeCategory === cat.id ? "secondary" : "ghost"}
+             onClick={() => setActiveCategory(cat.id)}
+-            className="rounded-full px-4 h-8 transition-all duration-300 uppercase text-[9px] tracking-[0.15em] font-bold"
++            className={`rounded-full px-5 h-10 transition-all duration-300 font-medium text-sm ${activeCategory === cat.id ? 'bg-foreground text-background hover:bg-foreground/90' : 'text-muted-foreground hover:bg-secondary'}`}
+           >
+             {cat.name}
+           </Button>
+@@ -129,7 +129,7 @@ export default function Home() {
+           >
+             {[...Array(10)].map((_, i) => (
+               <div key={i} className="flex flex-col gap-3">
+-                <Skeleton className="aspect-[4/5] rounded-xl w-full" />
++                <Skeleton className="aspect-[4/5] rounded-lg w-full" />
+                 <div className="space-y-1.5">
+                   <Skeleton className="h-3 w-3/4" />
+                   <Skeleton className="h-2 w-1/2" />
+@@ -142,81 +142,78 @@ export default function Home() {
+             key="empty"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+-            className="text-center py-20 border border-border border-dashed rounded-2xl"
++            className="text-center py-20 border border-border border-dashed rounded-md"
+           >
+-            <p className="text-muted-foreground text-xs uppercase tracking-widest">Nenhum item dispon├¡vel.</p>
++            <p className="text-muted-foreground text-sm font-medium">Nenhum item dispon├¡vel.</p>
+           </motion.div>
+         ) : (
+           <motion.div 
+             key="grid"
+             variants={staggerContainer}
+-            className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
++            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8"
+           >
+             {products.map((product, index) => {
+               const mainImage = product.product_images
+                 ?.sort((a, b) => a.position - b.position)?.[0]
+               
+-              // Featured item logic: The first item or items with a certain flag
+-              const isFeatured = index === 0 && !activeCategory;
+-
++              // Featured logic removed for a cleaner uniform grid typical of Apple Store
+               return (
+                 <motion.div 
+                   key={product.id}
+                   variants={slideUp}
+                   {...hoverScale}
+-                  className={isFeatured ? "col-span-2 row-span-1 md:col-span-2 md:row-span-2" : ""}
++                  className="flex flex-col h-full"
+                 >
+-                  <Card className={`overflow-hidden border-none bg-agon-white hover:bg-gray-50 transition-colors group rounded-2xl h-full flex flex-col shadow-sm hover:shadow-md border border-agon-border ${isFeatured ? 'bg-agon-light-bg shadow-xl shadow-agon-orange/10 border-agon-orange/20' : ''}`}>
+-                    <Link to={`/produto/${product.id}`} className="relative block flex-1 overflow-hidden">
++                  <Card className="overflow-hidden border border-border bg-card hover:shadow-apple-img transition-all duration-500 group rounded-md h-full flex flex-col">
++                    <Link to={`/produto/${product.id}`} className="relative block flex-1 overflow-hidden bg-secondary">
+                       {mainImage ? (
+                         <img 
+                           src={mainImage.url} 
+                           alt={product.name} 
+                           loading="lazy"
+                           decoding="async"
+-                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
++                          className="w-full h-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105" 
+                         />
+                       ) : (
+-                        <div className="w-full h-full bg-muted flex items-center justify-center">
+-                          <span className="text-muted-foreground text-[8px] uppercase tracking-widest">Sem imagem</span>
+-                        </div>
+-                      )}
+-                      {isFeatured && (
+-                        <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest">
+-                          Destaque da Cole├º├úo
++                        <div className="w-full h-full aspect-[4/5] flex items-center justify-center bg-secondary">
++                          <span className="text-muted-foreground text-xs font-medium">Sem Imagem</span>
+                         </div>
+                       )}
+                     </Link>
+-                    <CardContent className={isFeatured ? "p-6" : "p-3.5 flex-1 flex flex-col"}>
+-                      <div className="mb-2">
+-                         <span className="text-[8px] font-bold text-primary uppercase tracking-[0.25em]">{product.categories?.name}</span>
++                    <CardContent className="p-4 flex-1 flex flex-col">
++                      <div className="mb-3">
++                         <span className="text-xs font-semibold text-agon-orange mb-1 block">
++                           {product.categories?.name}
++                         </span>
+                         <Link to={`/produto/${product.id}`}>
+-                          <h3 className={`${isFeatured ? 'text-2xl' : 'text-xs'} font-bold text-foreground mt-1 line-clamp-2 group-hover:text-primary transition-colors tracking-tight`}>
++                          <h3 className="text-base font-semibold text-foreground line-clamp-2 transition-colors tracking-tight leading-tight">
+                             {product.name}
+                           </h3>
+                         </Link>
+                       </div>
+                       
+-                      <div className="mt-auto pt-3 flex items-center justify-between">
++                      <div className="mt-auto pt-2 flex items-end justify-between">
+                         <div className="flex flex-col">
+                           {product.compare_price && (
+-                            <span className="text-[9px] text-muted-foreground line-through opacity-60">{formatPrice(product.compare_price)}</span>
++                            <span className="text-xs text-muted-foreground line-through">{formatPrice(product.compare_price)}</span>
+                           )}
+-                          <span className={`${isFeatured ? 'text-xl' : 'text-sm'} font-black text-foreground tracking-tight`}>{formatPrice(product.price)}</span>
++                          <span className="text-lg font-bold text-foreground tracking-tight">{formatPrice(product.price)}</span>
+                         </div>
+                         
+                         {product.stock_status === 'available' ? (
+                           <Button
+-                            size={isFeatured ? "default" : "icon"}
++                            size="icon"
+                             variant="primary"
+                             aria-label="Adicionar"
+                             onClick={() => handleAddToCart(product)}
+-                            className={isFeatured ? "rounded-full px-6" : "rounded-full w-7 h-7 shadow-lg shadow-primary/10 text-xs"}
++                            className="rounded-full w-8 h-8 shadow-sm transition-transform hover:scale-105"
+                           >
+-                            {isFeatured ? "Comprar Agora" : "+"}
++                            +
+                           </Button>
+                         ) : (
+-                          <Badge variant="outline" className="text-[7px] px-2 py-0.5 rounded-full uppercase tracking-widest opacity-60">Esgotado</Badge>
++                          <Badge variant="outline" className="text-[10px] px-2 py-0.5 rounded-full font-medium text-muted-foreground border-border bg-secondary">
++                            Esgotado
++                          </Badge>
+                         )}
+                       </div>
+                     </CardContent>
+diff --git a/src/features/products/pages/ProductDetail.jsx b/src/features/products/pages/ProductDetail.jsx
+index c72622f..4459697 100644
+--- a/src/features/products/pages/ProductDetail.jsx
++++ b/src/features/products/pages/ProductDetail.jsx
+@@ -53,17 +53,17 @@ export default function ProductDetail() {
+   if (loading) {
+     return (
+       <div data-testid="product-loading" className="max-w-5xl mx-auto px-4 py-8">
+-        <Skeleton className="h-4 w-48 mb-8" />
++        <Skeleton className="h-4 w-48 mb-8 rounded" />
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+-          <Skeleton className="aspect-square rounded-xl w-full" />
++          <Skeleton className="aspect-square rounded-lg w-full" />
+           <div className="space-y-6">
+-            <Skeleton className="h-8 w-3/4" />
+-            <Skeleton className="h-4 w-1/4" />
+-            <Skeleton className="h-10 w-1/3" />
++            <Skeleton className="h-8 w-3/4 rounded" />
++            <Skeleton className="h-4 w-1/4 rounded" />
++            <Skeleton className="h-10 w-1/3 rounded" />
+             <div className="space-y-2 mt-8">
+-              <Skeleton className="h-4 w-full" />
+-              <Skeleton className="h-4 w-full" />
+-              <Skeleton className="h-4 w-2/3" />
++              <Skeleton className="h-4 w-full rounded" />
++              <Skeleton className="h-4 w-full rounded" />
++              <Skeleton className="h-4 w-2/3 rounded" />
+             </div>
+             <Skeleton className="h-14 w-full rounded-full mt-8" />
+           </div>
+@@ -75,7 +75,7 @@ export default function ProductDetail() {
+   if (!product) {
+     return (
+       <div className="max-w-5xl mx-auto px-4 py-16 text-center border border-dashed border-border rounded-lg mt-8">
+-        <h1 className="text-2xl font-bold mb-4">Produto n├úo encontrado</h1>
++        <h1 className="text-heading-sm font-semibold mb-4">Produto n├úo encontrado</h1>
+         <Button asChild variant="outline">
+           <Link to="/">Voltar para a loja</Link>
+         </Button>
+@@ -86,13 +86,13 @@ export default function ProductDetail() {
+   const images = product.product_images || []
+ 
+   return (
+-    <div className="max-w-5xl mx-auto px-4 py-8">
++    <div className="max-w-5xl mx-auto px-4 py-8 mb-20">
+       <Helmet>
+         <title>{product.name} | Agon Imports</title>
+         <meta name="description" content={product.description ? product.description.slice(0, 160) : `Compre ${product.name} na Loja MVP com frete gr├ítis acima de R$100.`} />
+       </Helmet>
+       
+-      <nav className="text-sm text-muted-foreground mb-8 flex items-center gap-1">
++      <nav className="text-sm text-muted-foreground mb-8 flex items-center gap-1 font-medium">
+         <Link to="/" className="hover:text-foreground transition-colors">In├¡cio</Link>
+         {product.categories && (
+           <>
+@@ -103,13 +103,13 @@ export default function ProductDetail() {
+           </>
+         )}
+         <ChevronRight className="w-4 h-4 mx-1 opacity-50" />
+-        <span className="text-foreground font-medium truncate">{product.name}</span>
++        <span className="text-foreground font-semibold truncate">{product.name}</span>
+       </nav>
+ 
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+         {/* Gallery */}
+         <div className="space-y-4">
+-          <div className="aspect-square bg-muted rounded-xl overflow-hidden border border-border">
++          <div className="aspect-square bg-secondary rounded-lg overflow-hidden border border-border">
+             {images.length > 0 ? (
+               <img
+                 src={images[selectedImage]?.url}
+@@ -117,7 +117,7 @@ export default function ProductDetail() {
+                 className="w-full h-full object-cover"
+               />
+             ) : (
+-              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
++              <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm font-medium">
+                 Sem imagem
+               </div>
+             )}
+@@ -128,7 +128,7 @@ export default function ProductDetail() {
+                 <button
+                   key={img.id}
+                   onClick={() => setSelectedImage(idx)}
+-                  className={`relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
++                  className={`relative w-20 h-20 rounded-md overflow-hidden flex-shrink-0 transition-all ${
+                     idx === selectedImage 
+                       ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' 
+                       : 'opacity-70 hover:opacity-100 border border-border'
+@@ -143,19 +143,19 @@ export default function ProductDetail() {
+ 
+         {/* Product Info */}
+         <div className="flex flex-col">
+-          <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">{product.name}</h1>
++          <h1 className="text-heading-lg font-display font-semibold tracking-tight text-foreground mb-2 leading-tight">{product.name}</h1>
+ 
+           {product.categories && (
+-            <p className="text-sm text-primary font-medium mb-6">{product.categories.name}</p>
++            <p className="text-sm text-agon-orange font-semibold mb-6 tracking-wide uppercase">{product.categories.name}</p>
+           )}
+ 
+           <div className="flex items-baseline gap-3 mb-8">
+             {product.compare_price && (
+-              <span className="text-xl text-muted-foreground line-through decoration-muted-foreground/50">
++              <span className="text-subheading text-muted-foreground line-through decoration-muted-foreground/50">
+                 {formatPrice(product.compare_price)}
+               </span>
+             )}
+-            <span className="text-4xl font-bold tracking-tight text-foreground">
++            <span className="text-display-xl font-display font-bold tracking-tight text-foreground">
+               {formatPrice(product.price)}
+             </span>
+           </div>
+@@ -163,24 +163,24 @@ export default function ProductDetail() {
+           {product.stock_status === 'available' ? (
+             <div className="mb-8 space-y-6">
+               <div className="space-y-3">
+-                <label className="text-sm font-medium text-foreground">Quantidade</label>
+-                <div className="flex items-center w-max bg-muted/50 border border-border rounded-lg p-1">
++                <label className="text-sm font-semibold text-foreground uppercase tracking-wide">Quantidade</label>
++                <div className="flex items-center w-max bg-secondary border border-border rounded-inputs p-1">
+                   <Button
+                     data-testid="decrease-qty"
+                     variant="ghost"
+                     size="icon"
+                     onClick={() => setQuantity(q => Math.max(1, q - 1))}
+-                    className="h-8 w-8 rounded-md"
++                    className="h-8 w-8 rounded-sm hover:bg-background transition-colors"
+                   >
+                     <Minus className="w-4 h-4" />
+                   </Button>
+-                  <span className="w-12 text-center font-medium">{quantity}</span>
++                  <span className="w-12 text-center font-semibold">{quantity}</span>
+                   <Button
+                     data-testid="increase-qty"
+                     variant="ghost"
+                     size="icon"
+                     onClick={() => setQuantity(q => q + 1)}
+-                    className="h-8 w-8 rounded-md"
++                    className="h-8 w-8 rounded-sm hover:bg-background transition-colors"
+                   >
+                     <Plus className="w-4 h-4" />
+                   </Button>
+@@ -189,20 +189,20 @@ export default function ProductDetail() {
+               <Button
+                 size="lg"
+                 onClick={handleAddToCart}
+-                className="w-full text-lg h-14"
++                className="w-full text-base h-14 font-bold tracking-wide rounded-full"
+               >
+                 Adicionar ├á Sacola
+               </Button>
+             </div>
+           ) : (
+-            <div className="mb-8 py-4 text-center font-medium text-muted-foreground bg-muted/50 border border-border rounded-lg">
++            <div className="mb-8 py-4 text-center font-semibold text-muted-foreground bg-secondary border border-border rounded-inputs">
+               Produto temporariamente esgotado
+             </div>
+           )}
+ 
+-          <div className="bg-muted/30 p-4 rounded-lg border border-border mb-8">
+-            <p className="text-sm text-muted-foreground flex items-center gap-2">
+-              <span className="w-2 h-2 rounded-full bg-green-500"></span>
++          <div className="bg-secondary p-4 rounded-inputs border border-border mb-8">
++            <p className="text-sm font-medium text-muted-foreground flex items-center gap-3">
++              <span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-sm"></span>
+               {product.price >= 100
+                 ? 'Frete gr├ítis garantido para este produto'
+                 : 'Frete: R$ 15,90 (Gr├ítis acima de R$ 100)'}
+@@ -211,9 +211,9 @@ export default function ProductDetail() {
+ 
+           {product.description && (
+             <div className="pt-8 border-t border-border mt-auto">
+-              <h2 className="text-lg font-semibold text-foreground mb-4">Sobre o produto</h2>
++              <h2 className="text-subheading font-semibold text-foreground mb-4">Sobre o produto</h2>
+               <div className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
+-                <p className="whitespace-pre-line leading-relaxed">{product.description}</p>
++                <p className="whitespace-pre-line leading-relaxed text-body-sm">{product.description}</p>
+               </div>
+             </div>
+           )}
+diff --git a/src/index.css b/src/index.css
+index 5397962..ee551df 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -6,56 +6,64 @@
+ 
+ @layer base {
+   :root {
+-    /* AGON Design System Colors */
+-    --color-agon-navy: #1a2332;         /* Sidebar + elementos escuros */
+-    --color-agon-navy-light: #243044;   /* Hover sidebar */
+-    --color-agon-navy-dark: #0f1923;    /* Sidebar background profundo */
+-    --color-agon-orange: #e8731a;       /* Cor de destaque (canguru/CTA) */
+-    --color-agon-orange-hover: #d4650f; /* Hover do orange */
+-    --color-agon-white: #ffffff;        /* Fundo principal */
+-    --color-agon-light-bg: #f8f9fa;    /* Fundo alternativo */
+-    --color-agon-text: #1a2332;         /* Texto principal */
+-    --color-agon-text-muted: #6b7280;  /* Texto secund├írio */
+-    --color-agon-border: #e5e7eb;       /* Bordas */
+-
+-    /* Shadcn UI compatibility mapped to AGON */
+-    --background: var(--color-agon-white);
+-    --foreground: var(--color-agon-text);
+-
+-    --card: var(--color-agon-white);
+-    --card-foreground: var(--color-agon-text);
+-
+-    --popover: var(--color-agon-white);
+-    --popover-foreground: var(--color-agon-text);
++    /* Cores Premium Mescladas */
++    --color-midnight-graphite: #1d1d1f;
++    --color-deep-gray: #333333;
++    --color-medium-gray: #6e6e73;
++    --color-border-silver: #d6d6d6;
++    --color-canvas-white: #f5f5f7;
++    --color-pure-white: #ffffff;
++    
++    /* Cores Institucionais AGON */
++    --color-agon-navy: #1a2332;
++    --color-agon-navy-light: #243044;
++    --color-agon-orange: #e8731a;
++    --color-agon-orange-hover: #d4650f;
++
++    /* Cores de A├º├úo Apple */
++    --color-action-blue: #0066cc;
++    --color-action-blue-hover: #004499;
++    --color-interactive-blue: #0071e3;
++
++    /* Mapeamento para compatibilidade Shadcn UI */
++    --background: var(--color-canvas-white);
++    --foreground: var(--color-midnight-graphite);
++
++    --card: var(--color-pure-white);
++    --card-foreground: var(--color-midnight-graphite);
++
++    --popover: var(--color-pure-white);
++    --popover-foreground: var(--color-midnight-graphite);
+ 
+     --primary: var(--color-agon-orange);
+-    --primary-foreground: var(--color-agon-white);
++    --primary-foreground: var(--color-pure-white);
+ 
+-    --secondary: var(--color-agon-light-bg);
+-    --secondary-foreground: var(--color-agon-text);
++    --secondary: #e8e8ed;
++    --secondary-foreground: var(--color-midnight-graphite);
+ 
+-    --muted: var(--color-agon-light-bg);
+-    --muted-foreground: var(--color-agon-text-muted);
++    --muted: #e8e8ed;
++    --muted-foreground: var(--color-medium-gray);
+ 
+-    --accent: var(--color-agon-light-bg);
+-    --accent-foreground: var(--color-agon-text);
++    --accent: #f5f5f7;
++    --accent-foreground: var(--color-midnight-graphite);
+ 
+     --destructive: #ff3b30;
+-    --destructive-foreground: var(--color-agon-white);
++    --destructive-foreground: var(--color-pure-white);
+ 
+-    --border: var(--color-agon-border);
+-    --input: var(--color-agon-border);
++    --border: #e5e5e7;
++    --input: #d2d2d7;
+     --ring: var(--color-agon-orange);
+ 
+-    /* Apple Typography (kept for base, will change to Inter in tailwind config) */
+-    --font-sf-pro-text: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+-    --font-sf-pro-display: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
++    /* Apple Typography fallbacks */
++    --font-sf-pro-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
++    --font-sf-pro-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+ 
+-    /* Border Radius */
+-    --radius-cards: 8px;
+-    --radius-buttons: 980px;
++    /* Arredondamento H├¡brido */
++    --radius-cards: 6px;
++    --radius-inputs: 6px;
+     --radius-images: 8px;
+-    --radius: 8px; /* Default radius */
++    --radius-buttons: 980px;
++    --radius: 6px; /* Default */
+   }
+ 
+   * {
+diff --git a/tailwind.config.js b/tailwind.config.js
+index df28d81..830c0aa 100644
+--- a/tailwind.config.js
++++ b/tailwind.config.js
+@@ -51,20 +51,40 @@ export default {
+           "navy-dark": "var(--color-agon-navy-dark)",
+           orange: "var(--color-agon-orange)",
+           "orange-hover": "var(--color-agon-orange-hover)",
++        },
++        /* Action/Interactive Colors */
++        action: {
++          blue: "var(--color-action-blue)",
++          "blue-hover": "var(--color-action-blue-hover)",
++          interactive: "var(--color-interactive-blue)",
+         }
+       },
+       borderRadius: {
+-        lg: "var(--radius-images)",
+-        md: "calc(var(--radius-images) - 2px)",
+-        sm: "calc(var(--radius-images) - 4px)",
+-        full: "var(--radius-buttons)",
++        lg: "var(--radius-images)",      /* 8px */
++        md: "var(--radius-cards)",       /* 6px */
++        sm: "calc(var(--radius-cards) - 2px)", /* 4px */
++        inputs: "var(--radius-inputs)",  /* 6px */
++        full: "var(--radius-buttons)",   /* 980px */
++      },
++      fontSize: {
++        caption: ["12px", { lineHeight: "1.5", letterSpacing: "-0.15px" }],
++        "body-sm": ["14px", { lineHeight: "1.47", letterSpacing: "-0.18px" }],
++        subheading: ["18px", { lineHeight: "1.24", letterSpacing: "-0.22px" }],
++        callout: ["21px", { lineHeight: "1.19", letterSpacing: "-0.28px" }],
++        "heading-sm": ["24px", { lineHeight: "1.33", letterSpacing: "-0.24px" }],
++        "heading-lg": ["28px", { lineHeight: "1.14", letterSpacing: "0.29px" }],
++        "display-xl": ["34px", { lineHeight: "1", letterSpacing: "-0.1px" }],
++        "display-xxl": ["40px", { lineHeight: "1.1", letterSpacing: "0.44px" }],
++        "display-giant": ["44px", { lineHeight: "2.12" }],
++        display: ["56px", { lineHeight: "1.07", letterSpacing: "-0.28px" }],
+       },
+       fontFamily: {
+-        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+-        display: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
++        sans: ["var(--font-sf-pro-text)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
++        display: ["var(--font-sf-pro-display)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+       },
+       boxShadow: {
+-        'agon': 'rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
++        'agon': 'rgba(0, 0, 0, 0.04) 0px 8px 24px',
++        'apple-img': 'rgba(0, 0, 0, 0.12) 3px 5px 30px 0px',
+       }
+     },
+   },

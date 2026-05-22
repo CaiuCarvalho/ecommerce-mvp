@@ -51,20 +51,40 @@ export default {
           "navy-dark": "var(--color-agon-navy-dark)",
           orange: "var(--color-agon-orange)",
           "orange-hover": "var(--color-agon-orange-hover)",
+        },
+        /* Action/Interactive Colors */
+        action: {
+          blue: "var(--color-action-blue)",
+          "blue-hover": "var(--color-action-blue-hover)",
+          interactive: "var(--color-interactive-blue)",
         }
       },
       borderRadius: {
-        lg: "var(--radius-images)",
-        md: "calc(var(--radius-images) - 2px)",
-        sm: "calc(var(--radius-images) - 4px)",
-        full: "var(--radius-buttons)",
+        lg: "var(--radius-images)",      /* 8px */
+        md: "var(--radius-cards)",       /* 6px */
+        sm: "calc(var(--radius-cards) - 2px)", /* 4px */
+        inputs: "var(--radius-inputs)",  /* 6px */
+        full: "var(--radius-buttons)",   /* 980px */
+      },
+      fontSize: {
+        caption: ["12px", { lineHeight: "1.5", letterSpacing: "-0.15px" }],
+        "body-sm": ["14px", { lineHeight: "1.47", letterSpacing: "-0.18px" }],
+        subheading: ["18px", { lineHeight: "1.24", letterSpacing: "-0.22px" }],
+        callout: ["21px", { lineHeight: "1.19", letterSpacing: "-0.28px" }],
+        "heading-sm": ["24px", { lineHeight: "1.33", letterSpacing: "-0.24px" }],
+        "heading-lg": ["28px", { lineHeight: "1.14", letterSpacing: "0.29px" }],
+        "display-xl": ["34px", { lineHeight: "1", letterSpacing: "-0.1px" }],
+        "display-xxl": ["40px", { lineHeight: "1.1", letterSpacing: "0.44px" }],
+        "display-giant": ["44px", { lineHeight: "2.12" }],
+        display: ["56px", { lineHeight: "1.07", letterSpacing: "-0.28px" }],
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
-        display: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        sans: ["var(--font-sf-pro-text)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-sf-pro-display)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        'agon': 'rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+        'agon': 'rgba(0, 0, 0, 0.04) 0px 8px 24px',
+        'apple-img': 'rgba(0, 0, 0, 0.12) 3px 5px 30px 0px',
       }
     },
   },
