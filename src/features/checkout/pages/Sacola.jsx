@@ -11,7 +11,7 @@ export default function Sacola() {
 
   if (items.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-4 py-20">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 py-20 mb-20">
         <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-6">
           <ShoppingBag className="w-10 h-10 text-muted-foreground" />
         </div>
@@ -27,13 +27,13 @@ export default function Sacola() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+    <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 mb-20">
       <Helmet>
         <title>Sua Sacola | Agon Imports</title>
       </Helmet>
       
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Sua Sacola</h1>
+      <div className="mb-10">
+        <h1 className="text-heading-xl font-semibold tracking-tight">Sua Sacola</h1>
         <p className="text-muted-foreground mt-1">Revise seus itens antes do checkout.</p>
       </div>
 
@@ -97,7 +97,7 @@ export default function Sacola() {
         <div className="lg:col-span-1">
           <Card className="sticky top-24">
             <CardContent className="p-6">
-              <h2 className="text-lg font-semibold mb-4 border-b border-border pb-4">Resumo do Pedido</h2>
+              <h2 className="text-heading-sm font-semibold mb-4 border-b border-border pb-4">Resumo do Pedido</h2>
               
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-muted-foreground">

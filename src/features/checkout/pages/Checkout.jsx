@@ -137,13 +137,13 @@ export default function Checkout() {
   if (items.length === 0) return null
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 md:py-12">
+    <div className="max-w-5xl mx-auto px-4 py-8 md:py-12 mb-20">
       <Helmet>
         <title>Checkout | Agon Imports</title>
       </Helmet>
       
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Checkout</h1>
+      <div className="mb-10">
+        <h1 className="text-heading-xl font-semibold tracking-tight">Checkout</h1>
         <p className="text-muted-foreground mt-1">Finalize sua compra com segurança.</p>
       </div>
 
@@ -154,7 +154,7 @@ export default function Checkout() {
           {/* Registration or Profile */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">{user ? 'Seus Dados' : 'Dados Pessoais'}</CardTitle>
+              <CardTitle className="text-heading-sm font-semibold">{user ? 'Seus Dados' : 'Dados Pessoais'}</CardTitle>
             </CardHeader>
             <CardContent>
               {user ? (
@@ -197,7 +197,7 @@ export default function Checkout() {
           {/* Address */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">Endereço de Entrega</CardTitle>
+              <CardTitle className="text-heading-sm font-semibold">Endereço de Entrega</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -249,7 +249,7 @@ export default function Checkout() {
         <div className="lg:col-span-5">
           <Card className="sticky top-24">
             <CardHeader className="pb-4 border-b border-border">
-              <CardTitle className="text-xl">Resumo do Pedido</CardTitle>
+              <CardTitle className="text-heading-sm font-semibold">Resumo do Pedido</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="space-y-4 mb-6">

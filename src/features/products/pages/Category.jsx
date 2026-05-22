@@ -60,16 +60,16 @@ export default function Category() {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 mb-20">
         <div className="flex gap-2 mb-6">
           <Skeleton className="h-4 w-16" />
           <Skeleton className="h-4 w-24" />
         </div>
         <Skeleton className="h-8 w-48 mb-8" />
-        <div data-testid="category-loading" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div data-testid="category-loading" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="flex flex-col gap-4">
-              <Skeleton className="aspect-square rounded-2xl w-full" />
+              <Skeleton className="aspect-[4/5] rounded-md w-full" />
               <div className="space-y-2">
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-3 w-1/2" />
@@ -85,8 +85,8 @@ export default function Category() {
 
   if (!category) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center border border-dashed border-border rounded-lg mt-8">
-        <h1 className="text-2xl font-bold mb-4">Categoria não encontrada</h1>
+      <div className="max-w-7xl mx-auto px-4 py-16 text-center border border-dashed border-border rounded-md mt-8">
+        <h1 className="text-heading-md font-semibold mb-4">Categoria não encontrada</h1>
         <Button asChild variant="outline">
           <Link to="/">Voltar para a loja</Link>
         </Button>
@@ -95,7 +95,7 @@ export default function Category() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 mb-20">
       <Helmet>
         <title>{category.name} | Agon Imports</title>
         <meta name="description" content={`Produtos da categoria ${category.name}. Encontre as melhores ofertas na Loja MVP com frete grátis acima de R$100.`} />
@@ -107,8 +107,8 @@ export default function Category() {
         <span className="text-foreground font-medium">{category.name}</span>
       </nav>
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">{category.name}</h1>
+      <div className="mb-10">
+        <h1 className="text-heading-xl md:text-display-sm font-semibold tracking-tight">{category.name}</h1>
       </div>
 
       {products.length === 0 ? (
@@ -116,58 +116,67 @@ export default function Category() {
           <p className="text-muted-foreground">Nenhum produto nesta categoria.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {products.map(product => {
             const mainImage = product.product_images
               ?.sort((a, b) => a.position - b.position)?.[0]
             return (
-              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-shadow group">
-                <Link to={`/produto/${product.id}`}>
-                  <div className="aspect-square bg-muted flex items-center justify-center overflow-hidden">
+              <div key={product.id} className="flex flex-col h-full">
+                <Card className="overflow-hidden border border-border bg-card hover:shadow-apple-img transition-all duration-500 group rounded-md h-full flex flex-col">
+                  <Link to={`/produto/${product.id}`} className="relative block flex-1 overflow-hidden bg-secondary">
                     {mainImage ? (
                       <img 
                         src={mainImage.url} 
                         alt={product.name} 
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                        className="w-full h-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105" 
                       />
                     ) : (
-                      <span className="text-muted-foreground text-sm">Sem imagem</span>
+                      <div className="w-full h-full aspect-[4/5] flex items-center justify-center bg-secondary">
+                        <span className="text-muted-foreground text-xs font-medium">Sem imagem</span>
+                      </div>
                     )}
-                  </div>
-                </Link>
-                <CardContent className="p-4">
-                  <div className="min-h-[4rem]">
-                    <Link to={`/produto/${product.id}`}>
-                      <h3 className="text-sm font-medium text-foreground mb-1 line-clamp-2 hover:text-primary transition-colors">
-                        {product.name}
-                      </h3>
-                    </Link>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 mb-4">
-                    {product.compare_price && (
-                      <span className="text-xs text-muted-foreground line-through">{formatPrice(product.compare_price)}</span>
-                    )}
-                    <span className="text-sm font-bold text-foreground">{formatPrice(product.price)}</span>
-                  </div>
-                  
-                  {product.stock_status === 'available' ? (
-                    <Button
-                      size="sm"
-                      onClick={() => handleAddToCart(product)}
-                      className="w-full"
-                    >
-                      Adicionar
-                    </Button>
-                  ) : (
-                    <div className="flex justify-center">
-                       <Badge variant="outline" className="w-full justify-center py-1.5">Esgotado</Badge>
+                  </Link>
+                  <CardContent className="p-4 flex-1 flex flex-col">
+                    <div className="mb-3">
+                      <span className="text-xs font-semibold text-agon-orange mb-1 block">
+                        {category.name}
+                      </span>
+                      <Link to={`/produto/${product.id}`}>
+                        <h3 className="text-base font-semibold text-foreground line-clamp-2 transition-colors tracking-tight leading-tight">
+                          {product.name}
+                        </h3>
+                      </Link>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                    
+                    <div className="mt-auto pt-2 flex items-end justify-between">
+                      <div className="flex flex-col">
+                        {product.compare_price && (
+                          <span className="text-xs text-muted-foreground line-through">{formatPrice(product.compare_price)}</span>
+                        )}
+                        <span className="text-lg font-bold text-foreground tracking-tight">{formatPrice(product.price)}</span>
+                      </div>
+                      
+                      {product.stock_status === 'available' ? (
+                        <Button
+                          size="icon"
+                          variant="primary"
+                          aria-label="Adicionar"
+                          onClick={() => handleAddToCart(product)}
+                          className="rounded-full w-8 h-8 shadow-sm transition-transform hover:scale-105"
+                        >
+                          +
+                        </Button>
+                      ) : (
+                        <Badge variant="outline" className="text-[10px] px-2 py-0.5 rounded-full font-medium text-muted-foreground border-border bg-secondary">
+                          Esgotado
+                        </Badge>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             )
           })}
         </div>

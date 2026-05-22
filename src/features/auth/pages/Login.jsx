@@ -44,14 +44,14 @@ export default function Login() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4">
+    <div className="flex-1 flex items-center justify-center p-4 mb-20">
       <Helmet>
         <title>Entrar | Agon Imports</title>
       </Helmet>
       
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl">Bem-vindo de volta</CardTitle>
+          <CardTitle className="text-heading-md font-semibold">Bem-vindo de volta</CardTitle>
           <CardDescription>
             Insira suas credenciais para acessar sua conta
           </CardDescription>

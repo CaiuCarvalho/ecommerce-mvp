@@ -78,14 +78,14 @@ export default function Register() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4">
+    <div className="flex-1 flex items-center justify-center p-4 mb-20">
       <Helmet>
         <title>Criar Conta | Agon Imports</title>
       </Helmet>
       
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl">Criar Conta</CardTitle>
+          <CardTitle className="text-heading-md font-semibold">Criar Conta</CardTitle>
           <CardDescription>
             Preencha seus dados para começar a comprar
           </CardDescription>
