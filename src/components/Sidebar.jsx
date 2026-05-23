@@ -56,9 +56,12 @@ export default function Sidebar({ isOpen, onClose }) {
         >
           <X className="w-6 h-6" />
         </button>
-        <Link to="/" onClick={onClose} className="flex flex-col items-center gap-2 group mt-4">
-          <span className="text-2xl font-black tracking-widest uppercase mt-2 text-agon-orange group-hover:scale-105 transition-transform">
+        <Link to="/" onClick={onClose} className="flex flex-col items-center leading-none group mt-4">
+          <span className="text-2xl font-black tracking-widest uppercase text-agon-orange group-hover:brightness-110 transition-all">
             AGON
+          </span>
+          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/90 group-hover:text-agon-orange transition-all mt-1">
+            IMPORTS
           </span>
         </Link>
       </div>

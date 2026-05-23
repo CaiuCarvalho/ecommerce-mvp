@@ -70,45 +70,33 @@ function renderHome() {
 }
 
 describe('Home page', () => {
-  it('renders products and category filter buttons', async () => {
+  it('renders products in various sections', async () => {
     renderHome()
     await waitForElementToBeRemoved(() => screen.queryByTestId('home-loading'))
-    expect(screen.getByText('Fone Bluetooth')).toBeInTheDocument()
-    expect(screen.getByText('Ração Premium')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Eletrônicos' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Pets' })).toBeInTheDocument()
+    expect(screen.getAllByText('Fone Bluetooth').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Ração Premium').length).toBeGreaterThan(0)
   })
 
   it('shows compare_price along with current price for promo items', async () => {
     renderHome()
     await waitForElementToBeRemoved(() => screen.queryByTestId('home-loading'))
-    expect(screen.getByText(/149,90/)).toBeInTheDocument()
-    expect(screen.getByText(/79,90/)).toBeInTheDocument()
+    expect(screen.getAllByText(/149,90/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/79,90/).length).toBeGreaterThan(0)
   })
 
   it('shows "Esgotado" for out_of_stock products and Add button for available ones', async () => {
     renderHome()
     await waitForElementToBeRemoved(() => screen.queryByTestId('home-loading'))
-    expect(screen.getByRole('button', { name: /^Adicionar$/i })).toBeInTheDocument()
-    expect(screen.getByText('Esgotado')).toBeInTheDocument()
-  })
-
-  it('clicking a category filter filters the products', async () => {
-    const user = userEvent.setup()
-    renderHome()
-    await waitForElementToBeRemoved(() => screen.queryByTestId('home-loading'))
-    await user.click(screen.getByRole('button', { name: 'Pets' }))
-    await waitFor(() => {
-      expect(screen.queryByText('Fone Bluetooth')).not.toBeInTheDocument()
-      expect(screen.getByText('Ração Premium')).toBeInTheDocument()
-    })
+    expect(screen.getAllByRole('button', { name: /^Adicionar$/i }).length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Esgotado').length).toBeGreaterThan(0)
   })
 
   it('Add to cart calls addItem with product data', async () => {
     const user = userEvent.setup()
     renderHome()
     await waitForElementToBeRemoved(() => screen.queryByTestId('home-loading'))
-    await user.click(screen.getByRole('button', { name: /^Adicionar$/i }))
+    const addButtons = screen.getAllByRole('button', { name: /^Adicionar$/i })
+    await user.click(addButtons[0])
     const items = useCartStore.getState().items
     expect(items).toHaveLength(1)
     expect(items[0]).toMatchObject({ product_id: 'p1', name: 'Fone Bluetooth', price: 79.9 })

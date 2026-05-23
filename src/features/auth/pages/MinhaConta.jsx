@@ -11,6 +11,8 @@ import { User, Package, ChevronRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { queryKeys } from '../../../lib/queryKeys'
 
+import AddressManager from '../components/AddressManager'
+
 const STATUS_LABELS = {
   awaiting_payment: 'Aguardando Pagamento',
   processing: 'Processando',
@@ -45,7 +47,7 @@ export default function MinhaConta() {
   })
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+    <div className="max-w-5xl mx-auto px-4 py-8 md:py-12">
       <Helmet>
         <title>Minha Conta | Agon Imports</title>
       </Helmet>
@@ -80,6 +82,7 @@ export default function MinhaConta() {
               </div>
             </CardContent>
           </Card>
+          <AddressManager user={user} />
         </div>
 
         {/* Orders List */}

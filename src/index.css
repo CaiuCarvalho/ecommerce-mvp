@@ -80,4 +80,11 @@
     font-family: var(--font-sf-pro-display);
     letter-spacing: -0.28px; /* Typical display tracking */
   }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useAuth } from '../../../contexts/AuthContext'
 import { useCart } from '../../../contexts/CartContext'
@@ -46,6 +47,34 @@ export default function Checkout() {
   useEffect(() => {
     if (items.length === 0) navigate('/sacola', { replace: true })
   }, [items.length, navigate])
+
+  // Fetch favorite address for logged-in user
+  const { data: favoriteAddress } = useQuery({
+    queryKey: ['user_addresses', 'favorite', user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('user_addresses')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('is_favorite', true)
+        .single()
+      if (error && error.code !== 'PGRST116') throw error
+      return data || null
+    },
+    enabled: !!user?.id,
+  })
+
+  useEffect(() => {
+    if (favoriteAddress && !cep) {
+      setCep(favoriteAddress.cep)
+      setStreet(favoriteAddress.street)
+      setNumber(favoriteAddress.number)
+      setComplement(favoriteAddress.complement || '')
+      setNeighborhood(favoriteAddress.neighborhood)
+      setCity(favoriteAddress.city)
+      setState(favoriteAddress.state)
+    }
+  }, [favoriteAddress])
 
   async function handleCepBlur() {
     const clean = cep.replace(/\D/g, '')
