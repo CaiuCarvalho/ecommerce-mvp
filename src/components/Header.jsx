@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import CepModal from './CepModal'
 import { ShoppingCart, Search, MapPin, Menu, User, ChevronDown, Package, Settings, Trash2 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
@@ -15,6 +16,10 @@ export default function Header({ onOpenSidebar }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false)
   const [isTodosDropdownOpen, setIsTodosDropdownOpen] = useState(false)
+  const [isCepModalOpen, setIsCepModalOpen] = useState(false)
+  const [guestAddress, setGuestAddress] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('guest_address')) } catch { return null }
+  })
 
   // Sincroniza o select de categorias com a URL ativa
   const match = location.pathname.match(/^\/categoria\/([^/]+)/)
@@ -44,10 +49,10 @@ export default function Header({ onOpenSidebar }) {
 
   // Fetch favorite address for logged-in user
   const { data: favoriteAddress } = useQuery({
-    queryKey: ['user_addresses', 'favorite', user?.id],
+    queryKey: ['addresses', 'favorite', user?.id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('user_addresses')
+        .from('addresses')
         .select('*')
         .eq('user_id', user.id)
         .eq('is_favorite', true)
@@ -68,8 +73,9 @@ export default function Header({ onOpenSidebar }) {
     }
   }
 
-  const locationText = favoriteAddress
-    ? `${favoriteAddress.city}, ${favoriteAddress.state} ${favoriteAddress.cep}`
+  const activeAddress = favoriteAddress || guestAddress
+  const locationText = activeAddress
+    ? `${activeAddress.city}, ${activeAddress.state} ${activeAddress.cep}`
     : null
 
   return (
@@ -98,12 +104,13 @@ export default function Header({ onOpenSidebar }) {
           </Link>
 
           {/* Location / CEP */}
-          <Link
-            to={user ? "/minha-conta" : "/login"}
+          <button
+            type="button"
+            onClick={() => setIsCepModalOpen(true)}
             className="hidden md:flex items-end gap-1 hover:outline hover:outline-1 hover:outline-white/40 rounded px-2 py-1.5 transition-all flex-shrink-0 min-w-0"
           >
             <MapPin className="w-4 h-4 text-white/70 flex-shrink-0 mb-0.5" />
-            <div className="flex flex-col min-w-0">
+            <div className="flex flex-col min-w-0 text-left">
               <span className="text-[11px] text-gray-400 leading-tight truncate">
                 {user ? 'Enviar para' : 'Informe seu'}
               </span>
@@ -111,16 +118,16 @@ export default function Header({ onOpenSidebar }) {
                 {locationText || (user ? 'Adicionar CEP' : 'CEP')}
               </span>
             </div>
-          </Link>
+          </button>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="flex-1 flex h-[38px] rounded-md overflow-hidden min-w-0">
+          <form onSubmit={handleSearch} className="flex-1 flex h-[38px] min-w-0">
             {/* Category select — custom dropdown */}
             <div className="hidden lg:block relative border-r border-gray-300 h-full">
               <button
                 type="button"
                 onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
-                className="h-full flex items-center bg-gray-100 px-3 hover:bg-gray-200 transition-colors text-xs text-gray-700 font-medium gap-1 whitespace-nowrap"
+                className="h-full flex items-center bg-gray-100 px-3 hover:bg-gray-200 transition-colors text-xs text-gray-700 font-medium gap-1 whitespace-nowrap rounded-l-md"
               >
                 <span>{categories.find(cat => cat.slug === currentCategorySlug)?.name || 'Todos'}</span>
                 <ChevronDown className="w-3 h-3 text-gray-500" />
@@ -174,11 +181,11 @@ export default function Header({ onOpenSidebar }) {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Pesquisar na Agon"
-              className="flex-1 px-3 text-sm text-gray-900 bg-white outline-none placeholder:text-gray-400 min-w-0"
+              className="flex-1 px-3 text-sm text-gray-900 bg-white outline-none placeholder:text-gray-400 min-w-0 rounded-l-md lg:rounded-none"
             />
             <button
               type="submit"
-              className="bg-agon-orange hover:bg-agon-orange-hover transition-colors px-3 flex items-center justify-center flex-shrink-0"
+              className="bg-agon-orange hover:bg-agon-orange-hover transition-colors px-3 flex items-center justify-center flex-shrink-0 rounded-r-md"
               aria-label="Buscar"
             >
               <Search className="w-5 h-5 text-white" />
@@ -510,6 +517,11 @@ export default function Header({ onOpenSidebar }) {
           </nav>
         </div>
       </div>
+      <CepModal 
+        isOpen={isCepModalOpen} 
+        onClose={() => setIsCepModalOpen(false)} 
+        onAddressAdded={setGuestAddress} 
+      />
     </header>
   )
 }

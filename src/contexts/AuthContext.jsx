@@ -8,21 +8,32 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  async function fetchProfile(userId) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
-    setProfile(data)
+  async function fetchProfile(userId, isInitialLoad = false) {
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single()
+      setProfile(data)
+    } catch (error) {
+      console.error('Error fetching profile:', error)
+    } finally {
+      if (isInitialLoad) {
+        setLoading(false)
+      }
+    }
   }
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
-      if (session?.user) fetchProfile(session.user.id)
-      setLoading(false)
+      if (session?.user) {
+        fetchProfile(session.user.id, true)
+      } else {
+        setLoading(false)
+      }
     })
 
     // Listen for auth changes
@@ -34,6 +45,7 @@ export function AuthProvider({ children }) {
           setTimeout(() => fetchProfile(session.user.id), 0)
         } else {
           setProfile(null)
+          setLoading(false)
         }
       }
     )

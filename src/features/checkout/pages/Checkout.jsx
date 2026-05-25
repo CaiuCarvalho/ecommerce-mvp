@@ -36,6 +36,7 @@ export default function Checkout() {
   const [number, setNumber] = useState('')
   const [complement, setComplement] = useState('')
   const [neighborhood, setNeighborhood] = useState('')
+  const [deliveryInstructions, setDeliveryInstructions] = useState('')
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [cepLoading, setCepLoading] = useState(false)
@@ -50,10 +51,10 @@ export default function Checkout() {
 
   // Fetch favorite address for logged-in user
   const { data: favoriteAddress } = useQuery({
-    queryKey: ['user_addresses', 'favorite', user?.id],
+    queryKey: ['addresses', 'favorite', user?.id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('user_addresses')
+        .from('addresses')
         .select('*')
         .eq('user_id', user.id)
         .eq('is_favorite', true)
@@ -69,7 +70,19 @@ export default function Checkout() {
       setCep(favoriteAddress.cep)
       setStreet(favoriteAddress.street)
       setNumber(favoriteAddress.number)
-      setComplement(favoriteAddress.complement || '')
+      
+      const comp = favoriteAddress.complement || ''
+      if (comp.includes('| Detalhes:')) {
+        const parts = comp.split('| Detalhes:')
+        setComplement(parts[0].trim())
+        setDeliveryInstructions(parts[1].trim())
+      } else if (comp.startsWith('Detalhes:')) {
+        setComplement('')
+        setDeliveryInstructions(comp.replace('Detalhes:', '').trim())
+      } else {
+        setComplement(comp)
+      }
+
       setNeighborhood(favoriteAddress.neighborhood)
       setCity(favoriteAddress.city)
       setState(favoriteAddress.state)
@@ -114,11 +127,15 @@ export default function Checkout() {
         currentUser = newUser
       }
 
+      const finalComplement = deliveryInstructions.trim() 
+        ? (complement ? `${complement} | Detalhes: ${deliveryInstructions}` : `Detalhes: ${deliveryInstructions}`)
+        : complement
+
       const address = {
         cep: cep.replace(/\D/g, ''),
         street,
         number,
-        complement,
+        complement: finalComplement,
         neighborhood,
         city,
         state,
@@ -258,6 +275,11 @@ export default function Checkout() {
               <div className="space-y-2">
                 <Label htmlFor="ck-neighborhood">Bairro *</Label>
                 <Input id="ck-neighborhood" type="text" value={neighborhood} onChange={e => setNeighborhood(e.target.value)} required />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="ck-delivery-instructions">Detalhes de Entrega (Opcional)</Label>
+                <Input id="ck-delivery-instructions" type="text" value={deliveryInstructions} onChange={e => setDeliveryInstructions(e.target.value)} placeholder="Ex: Deixar na portaria, campainha quebrada..." />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
