@@ -163,7 +163,7 @@ export default function Header({ onOpenSidebar }) {
                     {parentCategories.map(parent => {
                       const children = getChildren(parent.id)
                       return (
-                        <li key={parent.id}>
+                        <li key={parent.id} className="relative group/parent">
                           <div className="border-t border-gray-100 my-0.5" />
                           <button
                             type="button"
@@ -171,27 +171,33 @@ export default function Header({ onOpenSidebar }) {
                               handleCategoryChange(parent.slug)
                               setIsCategoryDropdownOpen(false)
                             }}
-                            className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-gray-100 transition-colors ${
+                            className={`flex items-center justify-between w-full text-left px-4 py-2 text-xs font-semibold hover:bg-gray-100 transition-colors ${
                               currentCategorySlug === parent.slug ? 'text-agon-orange' : 'text-gray-800'
                             }`}
                           >
-                            {parent.name}
+                            <span>{parent.name}</span>
+                            {children.length > 0 && <ChevronDown className="w-3 h-3 -rotate-90 text-gray-400" />}
                           </button>
-                          {children.map(child => (
-                            <button
-                              key={child.id}
-                              type="button"
-                              onClick={() => {
-                                handleCategoryChange(child.slug)
-                                setIsCategoryDropdownOpen(false)
-                              }}
-                              className={`w-full text-left pl-7 pr-4 py-1.5 text-xs hover:bg-gray-100 transition-colors ${
-                                currentCategorySlug === child.slug ? 'text-agon-orange font-bold' : 'text-gray-600'
-                              }`}
-                            >
-                              {child.name}
-                            </button>
-                          ))}
+                          {children.length > 0 && (
+                            <ul className="absolute left-full top-0 mt-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-40 hidden group-hover/parent:block">
+                              {children.map(child => (
+                                <li key={child.id}>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      handleCategoryChange(child.slug)
+                                      setIsCategoryDropdownOpen(false)
+                                    }}
+                                    className={`block w-full text-left px-4 py-2 text-xs hover:bg-gray-100 transition-colors ${
+                                      currentCategorySlug === child.slug ? 'text-agon-orange font-bold' : 'text-gray-600'
+                                    }`}
+                                  >
+                                    {child.name}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </li>
                       )
                     })}
@@ -454,7 +460,7 @@ export default function Header({ onOpenSidebar }) {
       </div>
 
       {/* ======= BOTTOM BAR ======= */}
-      <div className="bg-agon-navy-light text-white overflow-hidden">
+      <div className="bg-agon-navy-light text-white">
         <div className="container mx-auto px-3 md:px-4 h-[38px] flex items-center gap-1">
           {/* "Todos" button — dropdown de categorias */}
           <div className="relative flex-shrink-0">
@@ -485,29 +491,35 @@ export default function Header({ onOpenSidebar }) {
                   {parentCategories.map(parent => {
                     const children = getChildren(parent.id)
                     return (
-                      <li key={parent.id}>
+                      <li key={parent.id} className="relative group/parent">
                         <div className="border-t border-gray-100 my-0.5" />
                         <Link
                           to={`/categoria/${parent.slug}`}
                           onClick={() => setIsTodosDropdownOpen(false)}
-                          className={`block w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-gray-100 transition-colors ${
+                          className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold hover:bg-gray-100 transition-colors ${
                             currentCategorySlug === parent.slug ? 'text-agon-orange' : 'text-gray-800'
                           }`}
                         >
-                          {parent.name}
+                          <span>{parent.name}</span>
+                          {children.length > 0 && <ChevronDown className="w-3 h-3 -rotate-90 text-gray-400" />}
                         </Link>
-                        {children.map(child => (
-                          <Link
-                            key={child.id}
-                            to={`/categoria/${child.slug}`}
-                            onClick={() => setIsTodosDropdownOpen(false)}
-                            className={`block w-full text-left pl-7 pr-4 py-2 text-xs hover:bg-gray-100 transition-colors ${
-                              currentCategorySlug === child.slug ? 'text-agon-orange font-bold' : 'text-gray-600'
-                            }`}
-                          >
-                            {child.name}
-                          </Link>
-                        ))}
+                        {children.length > 0 && (
+                          <ul className="absolute left-full top-0 mt-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-40 hidden group-hover/parent:block">
+                            {children.map(child => (
+                              <li key={child.id}>
+                                <Link
+                                  to={`/categoria/${child.slug}`}
+                                  onClick={() => setIsTodosDropdownOpen(false)}
+                                  className={`block w-full text-left px-4 py-2 text-xs hover:bg-gray-100 transition-colors ${
+                                    currentCategorySlug === child.slug ? 'text-agon-orange font-bold' : 'text-gray-600'
+                                  }`}
+                                >
+                                  {child.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </li>
                     )
                   })}
