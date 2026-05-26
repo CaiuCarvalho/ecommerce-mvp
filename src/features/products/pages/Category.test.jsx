@@ -30,7 +30,7 @@ beforeEach(() => {
   categoryResponse = { data: CATEGORY, error: null }
   supabaseMock.from = vi.fn((table) => {
     const b = {}
-    const chain = ['select', 'eq', 'order', 'limit']
+    const chain = ['select', 'eq', 'order', 'limit', 'in']
     for (const m of chain) b[m] = () => b
     b.single = () => Promise.resolve(categoryResponse)
     b.then = (ok) => {

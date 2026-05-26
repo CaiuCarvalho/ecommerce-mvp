@@ -24,12 +24,17 @@ export default function ProductForm({ productId = null }) {
     is_active: true,
   })
 
-  // Load categories
+  // Load categories (with hierarchy)
   useEffect(() => {
-    supabase.from('categories').select('*').order('id').then(({ data }) => {
+    supabase.from('categories').select('*').order('name').then(({ data }) => {
       setCategories(data || [])
     })
   }, [])
+
+  // Organize into parents and children
+  const parentCategories = categories.filter(c => !c.parent_id)
+  const childCategories = categories.filter(c => c.parent_id)
+  const getChildren = (parentId) => childCategories.filter(c => c.parent_id === parentId)
 
   // Load product data if editing
   useEffect(() => {
@@ -303,11 +308,27 @@ export default function ProductForm({ productId = null }) {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Selecione...</option>
-                {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name} {cat.is_active === false ? '(Inativa)' : ''}
-                  </option>
-                ))}
+                {parentCategories.map(parent => {
+                  const children = getChildren(parent.id)
+                  if (children.length === 0) {
+                    // Categoria pai sem filhos — selecionável diretamente
+                    return (
+                      <option key={parent.id} value={parent.id}>
+                        {parent.name} {parent.is_active === false ? '(Inativa)' : ''}
+                      </option>
+                    )
+                  }
+                  // Categoria pai com filhos — usa optgroup
+                  return (
+                    <optgroup key={parent.id} label={`${parent.name}${parent.is_active === false ? ' (Inativa)' : ''}`}>
+                      {children.map(child => (
+                        <option key={child.id} value={child.id}>
+                          {child.name} {child.is_active === false ? '(Inativa)' : ''}
+                        </option>
+                      ))}
+                    </optgroup>
+                  )
+                })}
               </select>
             </div>
           </section>

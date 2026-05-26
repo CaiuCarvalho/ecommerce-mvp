@@ -114,17 +114,33 @@ export default function Sidebar({ isOpen, onClose }) {
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-col pl-12 pr-4 py-2 space-y-3 mt-1 bg-agon-navy-light/30 rounded-xl">
-                  {categories.map(cat => (
-                    <Link
-                      key={cat.id}
-                      to={`/categoria/${cat.slug}`}
-                      onClick={onClose}
-                      className="text-gray-400 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
-                    >
-                      {cat.name}
-                    </Link>
-                  ))}
+                <div className="flex flex-col pl-12 pr-4 py-2 space-y-1 mt-1 bg-agon-navy-light/30 rounded-xl">
+                  {categories
+                    .filter(c => !c.parent_id)
+                    .map(parent => {
+                      const children = categories.filter(c => c.parent_id === parent.id)
+                      return (
+                        <div key={parent.id}>
+                          <Link
+                            to={`/categoria/${parent.slug}`}
+                            onClick={onClose}
+                            className="text-white/90 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors block py-1.5"
+                          >
+                            {parent.name}
+                          </Link>
+                          {children.map(child => (
+                            <Link
+                              key={child.id}
+                              to={`/categoria/${child.slug}`}
+                              onClick={onClose}
+                              className="text-gray-400 hover:text-white text-[11px] font-medium uppercase tracking-wider transition-colors block py-1 pl-3 border-l border-white/10"
+                            >
+                              {child.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )
+                    })}
                 </div>
               </motion.div>
             )}

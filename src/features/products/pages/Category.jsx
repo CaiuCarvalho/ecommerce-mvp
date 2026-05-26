@@ -15,6 +15,7 @@ export default function Category() {
   const { slug } = useParams()
   const { addItem } = useCart()
 
+  // Fetch the category by slug
   const { data: category, isLoading: loadingCategory } = useQuery({
     queryKey: queryKeys.categories.bySlug(slug),
     queryFn: async () => {
@@ -29,19 +30,58 @@ export default function Category() {
     }
   })
 
+  // If this is a child category, fetch its parent for breadcrumb
+  const { data: parentCategory } = useQuery({
+    queryKey: ['categories', 'parent', category?.parent_id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('id', category.parent_id)
+        .single()
+      if (error) throw error
+      return data || null
+    },
+    enabled: !!category?.parent_id
+  })
+
+  // Fetch child categories if this is a parent
+  const { data: childCategories = [] } = useQuery({
+    queryKey: ['categories', 'children', category?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('parent_id', category.id)
+        .eq('is_active', true)
+        .order('name')
+      if (error) throw error
+      return data || []
+    },
+    enabled: !!category?.id && !category?.parent_id // only for parent categories
+  })
+
+  // Determine which category IDs to fetch products from
+  // If parent: this category + all children. If child: only this category.
+  const categoryIds = category
+    ? category.parent_id
+      ? [category.id] // child category: only its own products
+      : [category.id, ...childCategories.map(c => c.id)] // parent: include children
+    : []
+
   const { data: products = [], isLoading: loadingProducts } = useQuery({
-    queryKey: queryKeys.products.list({ categoryId: category?.id }),
+    queryKey: queryKeys.products.list({ categoryIds }),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*, product_images(url, position), categories(name)')
+        .select('*, product_images(url, position), categories(name, slug)')
         .eq('is_active', true)
-        .eq('category_id', category.id)
+        .in('category_id', categoryIds)
         .order('created_at', { ascending: false })
       if (error) throw error
       return data || []
     },
-    enabled: !!category?.id
+    enabled: categoryIds.length > 0
   })
 
   const loading = loadingCategory || loadingProducts
@@ -94,22 +134,56 @@ export default function Category() {
     )
   }
 
+  const isParent = !category.parent_id
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 mb-20">
       <Helmet>
         <title>{category.name} | Agon Imports</title>
-        <meta name="description" content={`Produtos da categoria ${category.name}. Encontre as melhores ofertas na Loja MVP com frete grátis acima de R$100.`} />
+        <meta name="description" content={`Produtos da categoria ${category.name}. Encontre as melhores ofertas na Agon Imports.`} />
       </Helmet>
       
+      {/* Breadcrumb */}
       <nav className="text-sm text-muted-foreground mb-6 flex items-center gap-2">
         <Link to="/" className="hover:text-foreground transition-colors">Início</Link>
         <span>/</span>
-        <span className="text-foreground font-medium">{category.name}</span>
+        {parentCategory ? (
+          <>
+            <Link to={`/categoria/${parentCategory.slug}`} className="hover:text-foreground transition-colors">
+              {parentCategory.name}
+            </Link>
+            <span>/</span>
+            <span className="text-foreground font-medium">{category.name}</span>
+          </>
+        ) : (
+          <span className="text-foreground font-medium">{category.name}</span>
+        )}
       </nav>
 
       <div className="mb-10">
         <h1 className="text-heading-xl md:text-display-sm font-semibold tracking-tight">{category.name}</h1>
       </div>
+
+      {/* Subcategories navigation (only for parent categories with children) */}
+      {isParent && childCategories.length > 0 && (
+        <div className="mb-8 flex flex-wrap gap-2">
+          <Link
+            to={`/categoria/${category.slug}`}
+            className="px-4 py-2 text-sm font-medium rounded-full bg-agon-orange text-white transition-colors"
+          >
+            Todos
+          </Link>
+          {childCategories.map(child => (
+            <Link
+              key={child.id}
+              to={`/categoria/${child.slug}`}
+              className="px-4 py-2 text-sm font-medium rounded-full border border-border text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+            >
+              {child.name}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {products.length === 0 ? (
         <div className="text-center py-16 border border-border border-dashed rounded-lg">
@@ -120,6 +194,7 @@ export default function Category() {
           {products.map(product => {
             const mainImage = product.product_images
               ?.sort((a, b) => a.position - b.position)?.[0]
+            const catLabel = product.categories?.name || category.name
             return (
               <div key={product.id} className="flex flex-col h-full">
                 <Card className="overflow-hidden border border-border bg-card hover:shadow-apple-img transition-all duration-500 group rounded-md h-full flex flex-col">
@@ -141,7 +216,7 @@ export default function Category() {
                   <CardContent className="p-4 flex-1 flex flex-col">
                     <div className="mb-3">
                       <span className="text-xs font-semibold text-agon-orange mb-1 block">
-                        {category.name}
+                        {catLabel}
                       </span>
                       <Link to={`/produto/${product.id}`}>
                         <h3 className="text-base font-semibold text-foreground line-clamp-2 transition-colors tracking-tight leading-tight">
@@ -184,3 +259,4 @@ export default function Category() {
     </div>
   )
 }
+

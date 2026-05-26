@@ -47,6 +47,10 @@ export default function Header({ onOpenSidebar }) {
     }
   })
 
+  // Organize into hierarchy
+  const parentCategories = categories.filter(c => !c.parent_id)
+  const getChildren = (parentId) => categories.filter(c => c.parent_id === parentId)
+
   // Fetch favorite address for logged-in user
   const { data: favoriteAddress } = useQuery({
     queryKey: ['addresses', 'favorite', user?.id],
@@ -141,7 +145,7 @@ export default function Header({ onOpenSidebar }) {
                     className="fixed inset-0 z-20" 
                     onClick={() => setIsCategoryDropdownOpen(false)}
                   />
-                  <ul className="absolute left-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-30 text-left">
+                  <ul className="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-30 text-left max-h-80 overflow-y-auto">
                     <li>
                       <button
                         type="button"
@@ -156,22 +160,41 @@ export default function Header({ onOpenSidebar }) {
                         Todos
                       </button>
                     </li>
-                    {categories.map(cat => (
-                      <li key={cat.id}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            handleCategoryChange(cat.slug)
-                            setIsCategoryDropdownOpen(false)
-                          }}
-                          className={`w-full text-left px-4 py-2 text-xs hover:bg-gray-100 transition-colors ${
-                            currentCategorySlug === cat.slug ? 'text-agon-orange font-bold' : 'text-gray-700'
-                          }`}
-                        >
-                          {cat.name}
-                        </button>
-                      </li>
-                    ))}
+                    {parentCategories.map(parent => {
+                      const children = getChildren(parent.id)
+                      return (
+                        <li key={parent.id}>
+                          <div className="border-t border-gray-100 my-0.5" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleCategoryChange(parent.slug)
+                              setIsCategoryDropdownOpen(false)
+                            }}
+                            className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-gray-100 transition-colors ${
+                              currentCategorySlug === parent.slug ? 'text-agon-orange' : 'text-gray-800'
+                            }`}
+                          >
+                            {parent.name}
+                          </button>
+                          {children.map(child => (
+                            <button
+                              key={child.id}
+                              type="button"
+                              onClick={() => {
+                                handleCategoryChange(child.slug)
+                                setIsCategoryDropdownOpen(false)
+                              }}
+                              className={`w-full text-left pl-7 pr-4 py-1.5 text-xs hover:bg-gray-100 transition-colors ${
+                                currentCategorySlug === child.slug ? 'text-agon-orange font-bold' : 'text-gray-600'
+                              }`}
+                            >
+                              {child.name}
+                            </button>
+                          ))}
+                        </li>
+                      )
+                    })}
                   </ul>
                 </>
               )}
@@ -447,32 +470,47 @@ export default function Header({ onOpenSidebar }) {
             {isTodosDropdownOpen && (
               <>
                 <div className="fixed inset-0 z-20" onClick={() => setIsTodosDropdownOpen(false)} />
-                <ul className="absolute left-0 top-full mt-1 w-52 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-30 text-left">
+                <ul className="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-30 text-left max-h-96 overflow-y-auto">
                   <li>
                     <Link
                       to="/"
                       onClick={() => setIsTodosDropdownOpen(false)}
                       className={`block w-full text-left px-4 py-2.5 text-xs hover:bg-gray-100 transition-colors ${
-                        location.pathname === '/' && !currentCategorySlug !== 'all' ? 'text-agon-orange font-bold' : 'text-gray-700'
+                        location.pathname === '/' && currentCategorySlug === 'all' ? 'text-agon-orange font-bold' : 'text-gray-700'
                       }`}
                     >
                       Todos os Produtos
                     </Link>
                   </li>
-                  <li className="border-t border-gray-100 my-1" />
-                  {categories.map(cat => (
-                    <li key={cat.id}>
-                      <Link
-                        to={`/categoria/${cat.slug}`}
-                        onClick={() => setIsTodosDropdownOpen(false)}
-                        className={`block w-full text-left px-4 py-2.5 text-xs hover:bg-gray-100 transition-colors ${
-                          currentCategorySlug === cat.slug ? 'text-agon-orange font-bold' : 'text-gray-700'
-                        }`}
-                      >
-                        {cat.name}
-                      </Link>
-                    </li>
-                  ))}
+                  {parentCategories.map(parent => {
+                    const children = getChildren(parent.id)
+                    return (
+                      <li key={parent.id}>
+                        <div className="border-t border-gray-100 my-0.5" />
+                        <Link
+                          to={`/categoria/${parent.slug}`}
+                          onClick={() => setIsTodosDropdownOpen(false)}
+                          className={`block w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-gray-100 transition-colors ${
+                            currentCategorySlug === parent.slug ? 'text-agon-orange' : 'text-gray-800'
+                          }`}
+                        >
+                          {parent.name}
+                        </Link>
+                        {children.map(child => (
+                          <Link
+                            key={child.id}
+                            to={`/categoria/${child.slug}`}
+                            onClick={() => setIsTodosDropdownOpen(false)}
+                            className={`block w-full text-left pl-7 pr-4 py-2 text-xs hover:bg-gray-100 transition-colors ${
+                              currentCategorySlug === child.slug ? 'text-agon-orange font-bold' : 'text-gray-600'
+                            }`}
+                          >
+                            {child.name}
+                          </Link>
+                        ))}
+                      </li>
+                    )
+                  })}
                 </ul>
               </>
             )}
@@ -502,16 +540,16 @@ export default function Header({ onOpenSidebar }) {
               Lançamentos
             </Link>
 
-            {/* Category links */}
-            {categories.map(cat => (
+            {/* Category links — only parent categories shown in bottom bar */}
+            {parentCategories.map(parent => (
               <Link
-                key={cat.id}
-                to={`/categoria/${cat.slug}`}
+                key={parent.id}
+                to={`/categoria/${parent.slug}`}
                 className={`text-[13px] font-medium hover:outline hover:outline-1 hover:outline-white/40 rounded px-2 py-1 transition-all flex-shrink-0 ${
-                  location.pathname === `/categoria/${cat.slug}` ? 'text-agon-orange' : ''
+                  location.pathname === `/categoria/${parent.slug}` ? 'text-agon-orange' : ''
                 }`}
               >
-                {cat.name}
+                {parent.name}
               </Link>
             ))}
           </nav>
