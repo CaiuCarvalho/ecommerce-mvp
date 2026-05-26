@@ -21,7 +21,7 @@ begin
   -- Nota: Como a função foi deployada com --no-verify-jwt, não precisamos passar o Authorization Bearer aqui, 
   -- mas passamos o Content-Type para o payload ser interpretado como JSON.
   perform net.http_post(
-    url := 'https://rntcndexofgutfsopcjy.supabase.co/functions/v1/send-email',
+    url := 'https://SEU_PROJETO.supabase.co/functions/v1/send-email',
     headers := '{"Content-Type": "application/json"}'::jsonb,
     body := payload
   );

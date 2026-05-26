@@ -14,7 +14,7 @@ npm install
 
 3. Crie o arquivo `.env` na raiz com:
 ```
-VITE_SUPABASE_URL=https://rntcndexofgutfsopcjy.supabase.co
+VITE_SUPABASE_URL=https://SEU_PROJETO.supabase.co
 VITE_SUPABASE_ANON_KEY=SUA_CHAVE_AQUI
 ```
 
@@ -26,7 +26,7 @@ npm run dev
 5. Acesse `http://localhost:5173`
 
 ## Acesso Admin
-- Email: caiu.lfc@gmail.com
+- Email: admin@exemplo.com
 - Após login, o link "Admin" aparece no header
 
 ## Estrutura
